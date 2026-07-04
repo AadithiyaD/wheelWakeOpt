@@ -16,19 +16,19 @@ FoamFile
 
 application     simpleFoam;
 
-startFrom        latestTime;
+startFrom        startTime;
 
 startTime        0;
 
 stopAt           endTime;
 
-endTime          100;
+endTime          1000;
 
 deltaT           1;
 
 writeControl     timeStep;
 
-writeInterval    100;
+writeInterval    250;
 
 purgeWrite       1;
 

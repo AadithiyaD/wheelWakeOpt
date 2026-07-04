@@ -19,8 +19,8 @@ reconstructPar -time 3     # Reconstruct layerFields
 checkMesh -allGeometry -allTopology -latestTime -writeAllFields -writeSets vtk | tee log.checkMesh
 # checkMesh -allGeometry -allTopology -latestTime
 
-# rm -rf constant/polyMesh 
-# mv 3/polyMesh constant/
-# rm -rf 3/ 
+rm -rf constant/polyMesh 
+mv 3/polyMesh constant/
+rm -rf 3/ 
 
 

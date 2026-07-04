@@ -15,8 +15,8 @@ FoamFile
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 // Which of the steps to run
-castellatedMesh false;
-snap            false;
+castellatedMesh true;
+snap            true;
 addLayers       true;
 
 
@@ -77,6 +77,16 @@ geometry
         scale 0.001;
         name contactPatchSide;
     }
+    rim1.stl
+    {
+        type triSurfaceMesh;
+        name rim1;
+    }
+    rim2.stl
+    {
+        type triSurfaceMesh;
+        name rim1;
+    }
 }
 
 
@@ -125,39 +135,18 @@ castellatedMeshControls
     features
     (
         {
-            file "midWakeRefBox_surface.obj";
-            level 0;
-        }
-        {
-            file "refinmentBox3_surface.obj";
-            level 0;
-        }
-        {
-            file "nearWakeRefBox_surface.obj";
-            level 0;
-        }
-        {
             file "wheel.obj";
-            level 3;
+            level 4;
         }
         {
-            file "contactPatchRefinement.obj";
-            level 0;
+            file "rim1_.obj";
+            level 5;
         }
         {
-            file "wheelRefRegion_surface.obj";
-            level 0;
-        }
-        {
-            file "contactPatchGround.obj";
-            level 8;
-        }
-        {
-            file "contactPatchSide.obj";
-            level 8;
+            file "rim2_.obj";
+            level 5;
         }
     );
-
 
     // Surface based refinement
     // ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -173,7 +162,7 @@ castellatedMeshControls
         wheel
         {
             // Surface-wise min and max refinement level
-            level       (3 5);
+            level       (2 3);
 
             // Optional specification of patch type (default is wall). No
             // constraint types (cyclic, symmetry) etc. are allowed.
@@ -181,10 +170,24 @@ castellatedMeshControls
             {
                 type wall;
             }
+            // Additional refinement for regions of high curvature. Expressed
+            // (bit similar to gapLevel) as:
+            // - number of cells per radius of curvature. (usually 1 is
+            //   good enough)
+            // - starting cell level? Not used at the moment.
+            // - maximum cell level. This can be smaller or larger than the
+            //   max 'surface' level
+            // - minumum curvature radius to ignore (expressed as a cell level).
+            //   This can be used to avoid detecting small sharp surface
+            //   features. Set to -1 to ignore.
+            //   (sometimes you want more refinement than sharp features since
+            //    these can be done with feature edge snapping (so can leave
+            //    level (0 0))
+            curvatureLevel (2 0 5 -1);
         }
         contactPatchGround
         {
-            level       (8 10);
+            level       (8 8);
             // patchInfo
             // {
             //     type wall;
@@ -192,12 +195,13 @@ castellatedMeshControls
         }
         contactPatchSide
         {
-            level       (8 10);
+            level       (8 8);
             patchInfo
             {
                 type wall;
             }
         }
+        
     }
 
     // Resolve sharp angles
@@ -220,6 +224,16 @@ castellatedMeshControls
     refinementRegions
     {
         wheelRefRegion
+        {
+            mode inside;
+            levels ((1E15 5));
+        }
+        rim1
+        {
+            mode inside;
+            levels ((1E15 5));
+        }
+        rim2
         {
             mode inside;
             levels ((1E15 5));
@@ -317,7 +331,7 @@ addLayersControls
     // Per final patch (so not geometry!) the layer information
     layers
     {
-        "(wheel|contactPatchSide)"
+        wheel
         {
             nSurfaceLayers 2;
             // thicknessModel firstAndRelativeFinal;
