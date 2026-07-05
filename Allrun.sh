@@ -5,7 +5,7 @@ cd "${0%/*}" || exit                                # Run from this directory
 rm -rf 0/
 rm -rf 100/
 rm -rf processor*
-rm -rf log.*
+# rm -rf log.*
 
 decompDict="-decomposeParDict system/decomposeParDict"
 
