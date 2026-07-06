@@ -1,2 +1,6 @@
 git+https://github.com/damogranlabs/classy_blocks.git
 typing-extensions 
+matplotlib
+numpy
+pandas
+scipy

@@ -4,3 +4,5 @@ venv/
 log.*
 thoughts.md
 */polyMesh/*
+maybeUnnecessary/*
+__pycache__/*

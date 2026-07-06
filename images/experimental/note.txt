@@ -1,0 +1,7 @@
+In experiment,
+Y => Cross stream direction
+Z => Height
+
+In my CFD
+Y => Height
+Z => Cross stream direction
