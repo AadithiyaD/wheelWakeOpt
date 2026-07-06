@@ -2,7 +2,7 @@ processor*/
 venv/
 [0-9]*/
 log.*
-thoughts.md
+# thoughts.md
 */polyMesh/*
 maybeUnnecessary/*
 __pycache__/*
