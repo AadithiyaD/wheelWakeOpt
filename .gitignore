@@ -6,3 +6,4 @@ log.*
 */polyMesh/*
 maybeUnnecessary/*
 __pycache__/*
+.git*
