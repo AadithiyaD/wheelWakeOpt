@@ -1,8 +1,15 @@
 from paraview.simple import *
+import sys
+
+caseName = sys.argv[1] if len(sys.argv) > 1 else "default"
 
 wheelwakeoptfoam = OpenFOAMReader(registrationName='wheelWakeOpt.foam', FileName='/home/durai/OpenFOAM/durai-v2506/run/wheelWakeOpt/wheelWakeOpt.foam')
 
-mergeBlocks1 = MergeBlocks(registrationName='MergeBlocks1', Input=wheelwakeoptfoam)
+reflect1 = Reflect(registrationName='Reflect1', Input=wheelwakeoptfoam)
+
+reflect1.Plane = 'Z Min'
+
+mergeBlocks1 = MergeBlocks(registrationName='MergeBlocks1', Input=reflect1)
 
 cellDataConv = CellDatatoPointData(registrationName='CellDataConv', Input=mergeBlocks1)
 
@@ -18,5 +25,13 @@ slice1.SliceType.Origin = [0.33, 0.0, 0.0]
 
 slice1.UpdatePipeline()
 
-SaveData('/home/durai/OpenFOAM/durai-v2506/run/wheelWakeOpt/sliceExpo.csv', proxy=slice1, PointDataArrays=['U', 'UNear', 'k', 'nut', 'omega', 'p'],
+SaveData(f'/home/durai/OpenFOAM/durai-v2506/run/wheelWakeOpt/data/{caseName}/X_0.33.csv', proxy=slice1, PointDataArrays=['U', 'UNear', 'k', 'nut', 'omega', 'p'],
+    FieldDataArrays=['CasePath'])
+
+slice2 = Slice(registrationName='Slice2', Input=clip1)
+slice2.SliceType.Origin = [0.495, 0.0, 0.0]
+
+slice2.UpdatePipeline()
+
+SaveData(f'/home/durai/OpenFOAM/durai-v2506/run/wheelWakeOpt/data/{caseName}/X_0.495.csv', proxy=slice2, PointDataArrays=['U', 'UNear', 'k', 'nut', 'omega', 'p'],
     FieldDataArrays=['CasePath'])

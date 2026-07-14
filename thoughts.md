@@ -69,15 +69,21 @@ How much of an issue is it that the contact patch does not have layers?
 - [x] find a way to change inlet/outlet boundary to patch type "inlet" and ground, wheel, contact patch to patch type    
     "wall". put this into the mesh script
 		- Change this in block mesh dict when createing patches and under snappy hex mesh surface refinement
-- [] Run a sim until asymptote, and then use tom-teschner's script to find proper runtime controls?
-- [] Start GCI
-	- [x] Coarse results done
-- Find a way to get spatial coordinates on the slice export
+- [x] Run a sim until asymptote, and then use tom-teschner's script to find proper runtime controls?
+	- runtime controls implemented
+- [x] Find a way to get spatial coordinates on the slice export
 	- Looks like i have a result `sliceExpo.csv`. Plot it as a contour and compare with paraview
 		- Question - What is UNear?
-- Find a way to compare cfd with exp data for input to the turbulence model opt
-	- I believe it makes sense to first interpolate and create a uniform grid of points for the CFD data. Then, evaluate this
-		interpolated function at the same grid points as available in the experimental data, then use these two values to calculate
-		RMSE.
-	- Maybe i can add weights to specific flow features to be captured
+- [x] Make symmetry expansion for cfd plot
+- [x] reduce contour plot vertical axis to max 0.14
+- [] Start GCI
+	- [x] Coarse results done
+		- [] Medium results done
+		- [] Fine results done
+	- [x] use symmetry conditiion	
+	- [x] Get stuff needed for GCI study
+	- [x] Calculate error metric
+		- When i first calcd the rmse, i was getting NaN values in the interpolated Ug_i. This was because the original expt.
+			data measures height in negative coordinates (i.e -0.1587 was the ground). I shifted the reference down to the ground
+			and clipped so that negatives get set to 0, and was able to get an rmse value
 - Maybe i can put this entire thing on an actual HPC instead of my PC?

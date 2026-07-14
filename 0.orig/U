@@ -43,9 +43,13 @@ boundaryField
         axis            (0 0 1);
         omega           181.79345706666666;
     }
-    "(top|side2|side1)"
+    "(top|side1)"
     {
         type            slip;
+    }
+    symmetry
+    {
+        type            symmetry;
     }
     
 }

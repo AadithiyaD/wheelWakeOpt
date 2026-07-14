@@ -100,26 +100,26 @@ castellatedMeshControls
     // If local number of cells is >= maxLocalCells on any processor
     // switches from from refinement followed by balancing
     // (current method) to (weighted) balancing before refinement.
-    maxLocalCells 1e7;
+    maxLocalCells 3e7;
 
     // Overall cell limit (approximately). Refinement will stop immediately
     // upon reaching this number so a refinement level might not complete.
     // Note that this is the number of cells before removing the part which
     // is not 'visible' from the keepPoint. The final number of cells might
     // actually be a lot less.
-    maxGlobalCells 2.5e7;
+    maxGlobalCells 10e7;
 
     // The surface refinement loop might spend lots of iterations refining just a
     // few cells. This setting will cause refinement to stop if <= minimumRefine
     // are selected for refinement. Note: it will at least do one iteration
     // (unless the number of cells to refine is 0)
-    minRefinementCells 0;
+    minRefinementCells 1;
 
     // Allow a certain level of imbalance during refining
     // (since balancing is quite expensive)
     // Expressed as fraction of perfect balance (= overall number of cells /
     // nProcs). 0=balance always.
-    maxLoadUnbalance 0.5;
+    maxLoadUnbalance 0.2;
 
     // Number of buffer layers between different levels.
     // 1 means normal 2:1 refinement restriction, larger means slower
@@ -183,7 +183,7 @@ castellatedMeshControls
             //   (sometimes you want more refinement than sharp features since
             //    these can be done with feature edge snapping (so can leave
             //    level (0 0))
-            curvatureLevel (2 0 5 -1);
+            curvatureLevel (3 0 6 -1);
         }
         contactPatchGround
         {
@@ -205,7 +205,7 @@ castellatedMeshControls
     }
 
     // Resolve sharp angles
-    resolveFeatureAngle 180;
+    resolveFeatureAngle 30;
 
 
     // Region-wise refinement
@@ -269,7 +269,7 @@ castellatedMeshControls
     // section reachable from the locationInMesh is kept.
     // NOTE: This point should never be on a face, always inside a cell, even
     // after refinement.
-    locationInMesh (1.25988 1.04315 -0.0329457);
+    locationInMesh (1.25988 1.04315 0.0329457);
 
     // Whether any faceZones (as specified in the refinementSurfaces)
     // are only on the boundary of corresponding cellZones or also allow
@@ -283,7 +283,7 @@ snapControls
 {
     //- Number of patch smoothing iterations before finding correspondence
     //  to surface
-    nSmoothPatch 0;
+    nSmoothPatch 5;
 
     //- Number of mesh displacement relaxation iterations.
     nSmoothInternal 0;
@@ -294,7 +294,7 @@ snapControls
     tolerance 3;
 
     //- Number of mesh displacement relaxation iterations.
-    nSolveIter 30;
+    nSolveIter 300;
 
     //- Maximum number of snapping relaxation iterations. Should stop
     //  before upon reaching a correct mesh.
@@ -304,10 +304,10 @@ snapControls
 
         //- Detect (geometric only) features by sampling the surface
         //  (default=false).
-        implicitFeatureSnap false;
+        implicitFeatureSnap true;
 
         //- Use castellatedMeshControls::features (default = true)
-        explicitFeatureSnap true;
+        explicitFeatureSnap false;
 
         //- Number of feature edge snapping iterations.
         //  Leave out altogether to disable.
@@ -423,9 +423,6 @@ addLayersControls
 
     // Additional layer thickness model
     nRelaxedIter 25; // default 3
-
-    
-
 }
 
 
@@ -442,17 +439,17 @@ meshQualityControls
     //- Amount to scale back displacement at error points
     errorReduction 0.75;
 
-    maxNonOrtho             65; // Maybe make this higher?
+    maxNonOrtho             65;     // Maybe make this higher?
     maxBoundarySkewness     20;
     maxInternalSkewness     4;
-    maxConcave              80; // Maybe make this higher?
-    minVol                  1e-13; // Maybe make this even lower?
+    maxConcave              80;     // Maybe make this higher?
+    minVol                  1e-13;  // Maybe make this even lower?
     minTetQuality           1e-9;
     minVolCollapseRatio     -1;
     minArea                 -1;
     minTwist                0.02;
     minDeterminant          0.001;
-    minFaceWeight           0.05; // Reduce this?
+    minFaceWeight           0.05;   // Reduce this?
     minFaceFlatness         -1;
     minVolRatio             0.01;
     minTriangleTwist        -1;

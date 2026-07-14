@@ -1,5 +1,6 @@
 processor*/
 venv/
+.venv/
 [0-9]*/
 log.*
 # thoughts.md
@@ -7,3 +8,5 @@ log.*
 maybeUnnecessary/*
 __pycache__/*
 .git*
+test.py
+test.sh

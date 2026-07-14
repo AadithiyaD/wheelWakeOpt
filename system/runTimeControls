@@ -1,3 +1,43 @@
+// runTimeControl1
+// {
+//     type            runTimeControl;
+//     libs            (utilityFunctionObjects);
+//     conditions
+//     {
+//         condition1
+//         {
+//             type            average;
+//             functionObject  forceCoeffs1;
+//             fields          (Cd);
+//             tolerance       4e-6;
+//             window          15;
+//             windowType      exact;
+//         }
+//     }
+//     satisfiedAction setTrigger;
+//     trigger         1;
+// }
+
+// runTimeControl2
+// {
+//     type            runTimeControl;
+//     libs            (utilityFunctionObjects);
+//     conditions
+//     {
+//         condition1
+//         {
+//             type            average;
+//             functionObject  forceCoeffs1;
+//             fields          (Cl);
+//             tolerance       1.5e-6;
+//             window          35;
+//             windowType      exact;
+//         }
+//     }
+//     satisfiedAction setTrigger;
+//     trigger         1;
+// }
+
 runTimeControl1
 {
     type            runTimeControl;
@@ -9,9 +49,20 @@ runTimeControl1
             type            average;
             functionObject  forceCoeffs1;
             fields          (Cd);
-            tolerance       1e-3;
-            window          20;
+            tolerance       4e-6;
+            window          15;
             windowType      exact;
+            groupID         1; 
+        }
+        condition2
+        {
+            type            average;
+            functionObject  forceCoeffs1;
+            fields          (Cl);
+            tolerance       1.5e-6;
+            window          35;
+            windowType      exact;
+            groupID         1; 
         }
     }
     satisfiedAction setTrigger;

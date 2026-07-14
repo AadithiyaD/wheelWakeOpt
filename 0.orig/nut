@@ -39,9 +39,13 @@ boundaryField
         type            nutUSpaldingWallFunction;
         value           uniform 0;
     }
-    "(top|side2|side1)"
+    "(top|side1)"
     {
         type            slip;
+    }
+    symmetry
+    {
+        type            symmetry;
     }
 }
 

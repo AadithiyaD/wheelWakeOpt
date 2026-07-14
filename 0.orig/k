@@ -41,9 +41,13 @@ boundaryField
         type            kqRWallFunction;
         value           $internalField;
     }
-    "(top|side2|side1)"
+    "(top|side1)"
     {
         type            slip;
+    }
+    symmetry
+    {
+        type            symmetry;
     }
     
 }

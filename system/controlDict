@@ -28,7 +28,7 @@ deltaT           1;
 
 writeControl     timeStep;
 
-writeInterval    500;
+writeInterval    1000;
 
 purgeWrite       1;
 
@@ -49,6 +49,7 @@ runTimeModifiable true;
 functions
 {
   #include "forceCoeffs"
+  #include "runTimeControls"
   #include "yPlus"
   #include "solverInfo"
   #include "graphFunctionObject"
