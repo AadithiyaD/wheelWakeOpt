@@ -49,15 +49,15 @@ def plot_contour_filled(x1_raw: np.ndarray, x2_raw: np.ndarray , u_raw: np.ndarr
 
 
 if __name__ == "__main__":
-    data = np.genfromtxt("data/medium/X_0.33.csv", delimiter=",", skip_header=1)
+    data = np.genfromtxt("data/fine/X_0.495.csv", delimiter=",", skip_header=1)
 
     x1_raw = data[:, 10]
     x2_raw = data[:, 9]
     Ux_raw = data[:, 0]
         
-    plot_title = "Contour plot of Ux (m/s) CFD data at X = 0.33, medium grid"
-    img_save_name = "Ux_X0.33_medium.png"
-    img_save_at = Path('images/medium')
+    plot_title = "Contour plot of Ux (m/s) CFD data at X = 0.495, fine grid"
+    img_save_name = "Ux_X0.495_fine.png"
+    img_save_at = Path('images/fine')
     
     plot_contour_filled(x1_raw=x1_raw, x2_raw=x2_raw, u_raw=Ux_raw,
                         plot_title=plot_title, 

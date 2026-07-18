@@ -3,7 +3,7 @@ cd "${0%/*}" || exit                                # Run from this directory
 . ${WM_PROJECT_DIR:?}/bin/tools/RunFunctions        # Tutorial run functions
 #------------------------------------------------------------------------------
 
-CASE_NAME="medium"
+CASE_NAME="fine"
 
 ./Allclean
 
@@ -50,8 +50,6 @@ runApplication reconstructParMesh -constant
 runApplication reconstructPar -latestTime
 
 ./residuals.sh # Technically not needed since im using graphObject, but i just want to use this
-
-# TODO: compress all of postData and mesh for tracking, move into data folder
 
 touch wheelWakeOpt.foam
 
