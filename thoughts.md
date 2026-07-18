@@ -87,3 +87,6 @@ How much of an issue is it that the contact patch does not have layers?
 			data measures height in negative coordinates (i.e -0.1587 was the ground). I shifted the reference down to the ground
 			and clipped so that negatives get set to 0, and was able to get an rmse value
 - Maybe i can put this entire thing on an actual HPC instead of my PC?
+- zstd
+	- Compress a dir `tar --zstd -cvf archive.tar.zst /path/to/directory`
+	- decompress  `tar --zstd -xf archive.tar.zst`
