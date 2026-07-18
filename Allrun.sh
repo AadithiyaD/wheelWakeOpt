@@ -3,25 +3,25 @@ cd "${0%/*}" || exit                                # Run from this directory
 . ${WM_PROJECT_DIR:?}/bin/tools/RunFunctions        # Tutorial run functions
 #------------------------------------------------------------------------------
 
-CASE_NAME="coarse"
+CASE_NAME="medium"
 
 ./Allclean
 
 decompDict="-decomposeParDict system/decomposeParDict"
 
-# ============ Create mesh ==========
+# ============ Create mesh =========================================================================
 blockMesh | tee log.blockMesh
 
 decomposePar | tee log.decomposeParMesh
 
 # mpirun -np 4 snappyHexMesh -parallel | tee log.snappyHexMesh
-mpirun -np 4 snappyHexMesh -parallel -overwrite | tee log.snappyHexMesh
+runParallel snappyHexMesh -overwrite
 
 # reconstructParMesh -time 3
 # reconstructPar -time 3    
 
 # checkMesh -allGeometry -allTopology -latestTime -writeAllFields -writeSets vtk | tee log.checkMesh
-checkMesh -allGeometry -allTopology -constant -writeAllFields -writeSets vtk | tee log.checkMesh
+# checkMesh -allGeometry -allTopology -parallel -writeAllFields -writeSets vtk | tee log.checkMesh
 # ==================================================================================================
 
 # rm -rf constant/polyMesh
@@ -31,7 +31,7 @@ checkMesh -allGeometry -allTopology -constant -writeAllFields -writeSets vtk | t
 # rm -rf processor*
 # rm -rf log.*
 
-# ============== Solve ================
+# ============== Solve =============================
 # restore0Dir
 restore0Dir -processor
 
@@ -45,7 +45,7 @@ runParallel $decompDict $(getApplication)
 # mpirun -np 4 simpleFoam -parallel
 # ==================================================
 
-# ====== Reconstruct and post-process ======
+# ====== Reconstruct and post-process ===========================================================
 runApplication reconstructParMesh -constant
 runApplication reconstructPar -latestTime
 
@@ -59,5 +59,5 @@ mkdir images/$CASE_NAME
 
 pvpython extractPlaneInfo.py "$CASE_NAME"
 
-python3 contourPlot.py "$CASE_NAME"
-# ==============================================================================
+# python3 contourPlot.py "$CASE_NAME"
+# =================================================================================================

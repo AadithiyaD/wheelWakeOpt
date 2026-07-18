@@ -1,7 +1,7 @@
 /*--------------------------------*- C++ -*----------------------------------*\
 | =========                 |                                                 |
 | \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
-|  \\    /   O peration     | Version:  v2506                                 |
+|  \\    /   O peration     | Version:  2506                                  |
 |   \\  /    A nd           | Website:  www.openfoam.com                      |
 |    \\/     M anipulation  |                                                 |
 \*---------------------------------------------------------------------------*/
@@ -9,47 +9,49 @@ FoamFile
 {
     version     2.0;
     format      ascii;
+    arch        "LSB;label=32;scalar=64";
     class       volScalarField;
-    object      p;
+    location    "constant";
+    object      cellRegion;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-#include        "include/initialConditions"
 
-dimensions      [0 2 -2 0 0 0 0];
+dimensions      [0 0 0 0 0 0 0];
 
-internalField   uniform $pressure;
+internalField   uniform 0;
 
 boundaryField
 {
-    #includeEtc "caseDicts/setConstraintTypes"
-    
     inlet
     {
-        type            zeroGradient;
+        type            calculated;
+        value           uniform 0;
     }
     outlet
     {
-        type            fixedValue;
+        type            calculated;
         value           uniform 0;
     }
     ground
     {
-        type            zeroGradient;
+        type            calculated;
+        value           uniform 0;
     }
-    "(wheel|contactPatchSide)"
+    top
     {
-        type            zeroGradient;
-    }
-    "(top|side1)"
-    {
-        type            slip;
+        type            calculated;
+        value           uniform 0;
     }
     symmetry
     {
         type            symmetry;
     }
-    
+    side1
+    {
+        type            calculated;
+        value           uniform 0;
+    }
 }
 
-// ************************************************************************* //
 
+// ************************************************************************* //

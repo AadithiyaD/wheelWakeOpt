@@ -2,7 +2,7 @@ from pathlib import Path
 import numpy as np
 from scipy.interpolate import griddata
 
-def calc_rmse_mae(x_pos: float):
+def calc_rmse_mae(x_pos: float, case_name: str):
     '''
     Calculates Root Mean Square and Mean Absolute Error. Specify
     X position as float
@@ -10,7 +10,7 @@ def calc_rmse_mae(x_pos: float):
     '''
     
     data_Path = Path("./data/")
-    cfdData  = np.genfromtxt(data_Path / 'coarse' / f'X_{x_pos}.csv', delimiter=",", skip_header=1)
+    cfdData  = np.genfromtxt(data_Path / f'{case_name}' / f'X_{x_pos}.csv', delimiter=",", skip_header=1)
     exptData = np.genfromtxt(data_Path / 'experimental' / f'X{int(x_pos * 1000)}mm_Mean.csv', delimiter=",", skip_header=9)
 
     # Load CFD data

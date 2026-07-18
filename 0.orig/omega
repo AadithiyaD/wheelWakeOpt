@@ -21,6 +21,8 @@ internalField   uniform $turbulentOmega;
 
 boundaryField
 {
+    #includeEtc "caseDicts/setConstraintTypes"
+    
     inlet
     {
         type            fixedValue;

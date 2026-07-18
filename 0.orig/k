@@ -21,6 +21,8 @@ internalField   uniform $turbulentKE;
 
 boundaryField
 {
+    #includeEtc "caseDicts/setConstraintTypes"
+    
     inlet
     {
         type            fixedValue;

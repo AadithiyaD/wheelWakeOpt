@@ -1,7 +1,7 @@
 /*--------------------------------*- C++ -*----------------------------------*\
 | =========                 |                                                 |
 | \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
-|  \\    /   O peration     | Version:  v2506                                 |
+|  \\    /   O peration     | Version:  2506                                  |
 |   \\  /    A nd           | Website:  www.openfoam.com                      |
 |    \\/     M anipulation  |                                                 |
 \*---------------------------------------------------------------------------*/
@@ -9,47 +9,50 @@ FoamFile
 {
     version     2.0;
     format      ascii;
-    class       volScalarField;
-    object      p;
+    arch        "LSB;label=32;scalar=64";
+    class       surfaceScalarField;
+    location    "constant";
+    object      faceZone;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-#include        "include/initialConditions"
 
-dimensions      [0 2 -2 0 0 0 0];
+dimensions      [0 0 0 0 0 0 0];
 
-internalField   uniform $pressure;
+internalField   uniform -1;
 
 boundaryField
 {
-    #includeEtc "caseDicts/setConstraintTypes"
-    
     inlet
     {
-        type            zeroGradient;
+        type            calculated;
+        value           uniform -1;
     }
     outlet
     {
-        type            fixedValue;
-        value           uniform 0;
+        type            calculated;
+        value           uniform -1;
     }
     ground
     {
-        type            zeroGradient;
+        type            calculated;
+        value           uniform -1;
     }
-    "(wheel|contactPatchSide)"
+    top
     {
-        type            zeroGradient;
-    }
-    "(top|side1)"
-    {
-        type            slip;
+        type            calculated;
+        value           uniform -1;
     }
     symmetry
     {
         type            symmetry;
+        value           uniform -1;
     }
-    
+    side1
+    {
+        type            calculated;
+        value           uniform -1;
+    }
 }
 
-// ************************************************************************* //
 
+// ************************************************************************* //

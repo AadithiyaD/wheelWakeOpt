@@ -78,7 +78,7 @@ How much of an issue is it that the contact patch does not have layers?
 - [x] reduce contour plot vertical axis to max 0.14
 - [] Start GCI
 	- [x] Coarse results done
-		- [] Medium results done
+		- [x] Medium results done
 		- [] Fine results done
 	- [x] use symmetry conditiion	
 	- [x] Get stuff needed for GCI study

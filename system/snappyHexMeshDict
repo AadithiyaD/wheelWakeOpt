@@ -246,17 +246,17 @@ castellatedMeshControls
         nearWakeRefBox
         {
             mode inside;
-            levels ((1E15 2));
+            levels ((1E15 4));
         }
         midWakeRefBox
         {
             mode inside;
-            levels ((1E15 1));
+            levels ((1E15 3));
         }
         farfieldRefBox
         {
             mode inside;
-            levels ((1E15 1));
+            levels ((1E15 2));
         }
     }
 
@@ -439,7 +439,7 @@ meshQualityControls
     //- Amount to scale back displacement at error points
     errorReduction 0.75;
 
-    maxNonOrtho             65;     // Maybe make this higher?
+    maxNonOrtho             75;     // Maybe make this higher?
     maxBoundarySkewness     20;
     maxInternalSkewness     4;
     maxConcave              80;     // Maybe make this higher?
