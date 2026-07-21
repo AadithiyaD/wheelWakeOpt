@@ -9,4 +9,6 @@ maybeUnnecessary/*
 __pycache__/*
 .git*
 test.py
+test2.py
 test.sh
+cases/*

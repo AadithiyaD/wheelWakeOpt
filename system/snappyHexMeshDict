@@ -246,17 +246,17 @@ castellatedMeshControls
         nearWakeRefBox
         {
             mode inside;
-            levels ((1E15 5));
+            levels ((1E15 4));
         }
         midWakeRefBox
         {
             mode inside;
-            levels ((1E15 4));
+            levels ((1E15 3));
         }
         farfieldRefBox
         {
             mode inside;
-            levels ((1E15 3));
+            levels ((1E15 2));
         }
     }
 

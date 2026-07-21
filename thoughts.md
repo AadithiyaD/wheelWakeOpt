@@ -6,6 +6,29 @@
 
 *24-6-26 -* Mesh is now NOT diverging, cl and cd are reasonable order. Need to next debug why layers cause so much issue (the mesh rn is only castellated and snapped)
 
+*19-7-26 -* I did a GCI study, but unfortunately I now feel this is not very useful. I already have the experiemental data, so I know my target value. What good is it now
+to see how much uncertainty is the mesh introducing? In a way, by calculating RMSE between velocity predictions, doesn't that convey the total errors involved?
+	GCI might be useful if I didn't have any experimental data, because then it would convey one aspect of the uncertainty involved in the CFD.
+	If I want to work on my mesh, its probably better to use targeted refinements in the areas of fluid structures, or use automatic mesh refinement to do the same
+
+*20-07-26 -* NEED TO USE PYTHON 3.11 or 3.10 !!!. PyFoam is ancient and one of the methods it uses internally is deprecated in later versions
+	Then, the question becomes why do i need pyfoam? I neeed it for modifying dicts, but can i do that 'manually' ?
+
+*21-07-26 -* ax has been integrated. Now, to see how much improvement can be made on the wake prediction.
+	Side thought, in order to make all sims complete in a reasonable amount of time, I'm going to limit the max iterations to 2000. I originally, had them at 4k, but that's 
+	too long.
+
+	First set of ax results done - 
+	```
+	[WARNING 07-21 20:14:09] ax.adapter.cross_validation: Metric TOTAL_RMSE was unable to be reliably fit.
+	[WARNING 07-21 20:14:09] ax.service.utils.best_point: Model fit is poor; falling back on raw data for best point.
+	[WARNING 07-21 20:14:09] ax.service.utils.best_point: Model fit is poor and data on objective metric TOTAL_RMSE is noisy; interpret best points results carefully.
+	Best Parameters: {'a1': 0.3557484596967697, 'betaStar': 0.05323854446411133}
+	Prediction (mean, variance): {'TOTAL_RMSE': (15.339050001925802, nan)}
+	```
+
+	RMSE is still kind of big, not much improvement. Maybe look to make the mesh more refined in concentrated areas? i.e near known shedding points? Or maybe automatic mesh adaption?
+
 ## Stuff about model
 - This wheel is **330mm diameter** and **180 mm tread width** 
 - Contact patch = **1069 mm width** and **105 mm height**
@@ -76,7 +99,7 @@ How much of an issue is it that the contact patch does not have layers?
 		- Question - What is UNear?
 - [x] Make symmetry expansion for cfd plot
 - [x] reduce contour plot vertical axis to max 0.14
-- [] Start GCI
+- [x] Start GCI
 	- [x] Coarse results done
 		- [x] Medium results done
 		- [] Fine results done
@@ -90,3 +113,6 @@ How much of an issue is it that the contact patch does not have layers?
 - zstd
 	- Compress a dir `tar --zstd -cvf archive.tar.zst /path/to/directory`
 	- decompress  `tar --zstd -xf archive.tar.zst`
+- [] Organize python scripts into directories
+- [] Integrate as bayesOpt script
+	- As a reminder, bayesOpt.py is the main optimizer, centralControl is the configurator and needs to be run before bayesOpt
