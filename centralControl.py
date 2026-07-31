@@ -25,7 +25,11 @@ NPROC = 6
 A1_COEFF = RangeParameterConfig(name="a1", parameter_type="float", 
                         bounds=(0.155, 0.465))
 BETASTAR = RangeParameterConfig(name="betaStar", parameter_type="float", 
-                                bounds=(0.045, 0.135))
+                                bounds=(0.05, 0.13))
+SIGMAOMEGA1 = RangeParameterConfig(name="sigmaOmega1", parameter_type="float", 
+                                bounds=(0.4, 0.6))
+SIGMAOMEGA2 = RangeParameterConfig(name="sigmaOmega2", parameter_type="float", 
+                                bounds=(0.712, 1.0))
 
 # x/H positions
 # X_BY_H=[1,4,6,10]

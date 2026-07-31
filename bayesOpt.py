@@ -1,7 +1,7 @@
 """
 Main optimisation script
 """
-from centralControl import BETASTAR, A1_COEFF, X_POS, TIME_BW_POLLS, FAILURE_TOLERANCE, PARALLEL_RUNS, NPROC, MAX_TRIALS, PVPYTHON_SCRIPT
+from centralControl import BETASTAR, A1_COEFF,SIGMAOMEGA1,SIGMAOMEGA2, X_POS, TIME_BW_POLLS, FAILURE_TOLERANCE, PARALLEL_RUNS, NPROC, MAX_TRIALS, PVPYTHON_SCRIPT
 import os
 import re
 import shutil
@@ -65,8 +65,10 @@ class Runner(IRunner):
             treatBinaryAsASCII=True
         )
         coeffs = turb_props["RAS"]["kOmegaSSTCoeffs"]
-        coeffs["a1"] = parameterization["a1"]
+        # coeffs["a1"] = parameterization["a1"]
         coeffs["betaStar"] = parameterization["betaStar"]
+        coeffs["alphaOmega1"] = parameterization["sigmaOmega1"]
+        coeffs["alphaOmega2"] = parameterization["sigmaOmega2"]
         turb_props.writeFile()
     
         # Non-blocking execution of simpleFoam
@@ -230,7 +232,7 @@ class ErrorMetric(IMetric):
             return None
 
 client.configure_experiment(
-    parameters=[A1_COEFF, BETASTAR],
+    parameters=[BETASTAR, SIGMAOMEGA1, SIGMAOMEGA2],
     name="3D Rotating Wheel Wake Calibration",
     description="Optimising the wake prediction behind a 3D rotatin wheel with the k-omega SST model",
     owner="me"
