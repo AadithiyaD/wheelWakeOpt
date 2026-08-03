@@ -113,6 +113,27 @@ How much of an issue is it that the contact patch does not have layers?
 - zstd
 	- Compress a dir `tar --zstd -cvf archive.tar.zst /path/to/directory`
 	- decompress  `tar --zstd -xf archive.tar.zst`
-- [] Organize python scripts into directories
-- [] Integrate as bayesOpt script
+- [x] Organize python scripts into directories
+- [x] Integrate as bayesOpt script
 	- As a reminder, bayesOpt.py is the main optimizer, centralControl is the configurator and needs to be run before bayesOpt
+- Investigate why RMSE has not improved after the opt run
+	- Assess suitability of 
+		- [x] Mesh
+			- I reduced wheel ref to 4, and ran into sigfpe 
+			- I increased number of layers to 5 (everything else default to medium) and error reduced to ~ 14.5
+			- journey 3 - nearWkae ref +1 far wake ref -1 , 8 layers => error ~15.266
+			- journey 5 - Increased extent of near wake box to 0 => error ~ 14.603
+				- chosen
+			- journey 6 - 5 layers, 1.22 expansion ratio, nearWake box start at 0, all wake ref +1 => 15.84
+		- [x] turbulence model
+			- Note - Change contact patch side to a sliding wall with same speed as inlet. If you think about it, the contact patch only moves on the road and does not rotate.
+			- Also, investigate the difference between slip and zeroGradient for the turbulence params
+			- kOmega SSST 			=> 14.603
+			- Realizeable k-Epsilon => 16.249
+		- [x] Overall prediction
+			- I think my contact patch should be sliding and not rotating, fixed this.
+				- BIG FUCKING MISTAKE - this produced an rmse of 27 and a completely weird looking vortex structure
+		- [x] error function
+			- Since only velocity expt data is available, not much else i can do but calc rmse of velocity prediction
+		- [] Optimization parameters
+			- From the paper "bounds-et-al-2020-improved-cfd-prediction-of-flows-past-simplified-and-real-life-automotive-bodies-using-modified" it would seem that beta star and sigma omega 1,2 play a bigger role in wake characteristics than a1 (though to be fair, they have not investigated a1). Should probably include these coeffs as well in the opt paramss

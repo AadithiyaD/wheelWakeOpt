@@ -4,11 +4,11 @@ import sys
 import os
 
 caseName = sys.argv[1] if len(sys.argv) > 1 else "default"
-# Specify as coarse, medium, fine
-cells = [2964899, 3490768, 7204737]
+# # Specify as coarse, medium, fine
+# cells = [2964899, 3490768, 7204737]
 
-# Volume of domain. Used to calculate representative size of mesh
-volume = 8.085
+# # Volume of domain. Used to calculate representative size of mesh
+# volume = 8.085
 
 # # The output of your cfd. Normally you'd use cl or cd, but im using rmse
 # # Since that is the variable of interest here. Using total rmse here
