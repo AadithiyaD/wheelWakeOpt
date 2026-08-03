@@ -7,8 +7,9 @@ log.*
 */polyMesh/*
 maybeUnnecessary/*
 __pycache__/*
+scripts/__pycache__/*
 .git*
 test.py
-test2.py
+test2*
 test.sh
 cases/*

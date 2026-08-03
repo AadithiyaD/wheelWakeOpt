@@ -56,6 +56,15 @@ solvers
         relTol          0.1;
         nSweeps         1;
     }
+
+    epsilon
+    {
+        solver          smoothSolver;
+        smoother        GaussSeidel;
+        tolerance       1e-8;
+        relTol          0.1;
+        nSweeps         1;
+    }
 }
 
 SIMPLE
@@ -76,6 +85,7 @@ relaxationFactors
         U               0.9;
         k               0.7;
         omega           0.7;
+        epsilon         0.7;
     }
 }
 

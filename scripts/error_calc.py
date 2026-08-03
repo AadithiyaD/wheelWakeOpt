@@ -15,9 +15,9 @@ def calc_rmse(x_pos: float, case_dir) -> np.float64:
     exptData = np.genfromtxt(exptDataPath / 'experimental' / f'X{int(x_pos * 1000)}mm_Mean.csv', delimiter=",", skip_header=9)
 
     # Load CFD data
-    x1_raw = cfdData[:, 10]
-    x2_raw = cfdData[:, 9]
-    Ux_raw = cfdData[:, 0]
+    x1_raw = cfdData[:, 15]
+    x2_raw = cfdData[:, 14]
+    Ux_raw = cfdData[:, 2]
 
     # Load experimental data
     x1e_raw = exptData[:, 0]

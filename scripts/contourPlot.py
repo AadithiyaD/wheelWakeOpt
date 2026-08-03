@@ -2,11 +2,14 @@ from pathlib import Path
 import numpy as np
 from scipy.interpolate import griddata
 import matplotlib.pyplot as plt
+import sys
+import os
+
 '''
 for CFD data ->
-col 0 = U:0
-col 9 = Y coord (height) => my x2, vertical axis
-col 10 = Z coord (cross stream) => my x1, horizontal axis
+col 2 = U:0
+col 14 = Y coord (height) => my x2, vertical axis
+col 15 = Z coord (cross stream) => my x1, horizontal axis
 
 for expt Data ->
 col 0 -> Y coord -> my horizontal axis
@@ -49,17 +52,21 @@ def plot_contour_filled(x1_raw: np.ndarray, x2_raw: np.ndarray , u_raw: np.ndarr
 
 
 if __name__ == "__main__":
-    data = np.genfromtxt("data/fine/X_0.495.csv", delimiter=",", skip_header=1)
-
-    x1_raw = data[:, 10]
-    x2_raw = data[:, 9]
-    Ux_raw = data[:, 0]
-        
-    plot_title = "Contour plot of Ux (m/s) CFD data at X = 0.495, fine grid"
-    img_save_name = "Ux_X0.495_fine.png"
-    img_save_at = Path('images/fine')
+    caseName = sys.argv[1] if len(sys.argv) > 1 else "default"
+    x_pos = ["0.33", "0.495"]
     
-    plot_contour_filled(x1_raw=x1_raw, x2_raw=x2_raw, u_raw=Ux_raw,
-                        plot_title=plot_title, 
-                        img_save_name=img_save_name,
-                        img_save_at=img_save_at)
+    for pos in x_pos:
+        data = np.genfromtxt(f"images/{caseName}/X_{pos}.csv", delimiter=",", skip_header=1)
+
+        x1_raw = data[:, 15]
+        x2_raw = data[:, 14]
+        Ux_raw = data[:, 2]
+            
+        plot_title = "Contour plot of Ux (m/s) CFD data at X = 0.495, medium grid"
+        img_save_name = f"Ux_X{pos}_{caseName}.png"
+        img_save_at = Path(f'images/{caseName}')
+        
+        plot_contour_filled(x1_raw=x1_raw, x2_raw=x2_raw, u_raw=Ux_raw,
+                            plot_title=plot_title, 
+                            img_save_name=img_save_name,
+                            img_save_at=img_save_at)

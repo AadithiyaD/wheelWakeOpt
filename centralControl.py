@@ -7,13 +7,13 @@ from PyFoam.RunDictionary.ParsedParameterFile import ParsedParameterFile
 import os
 
 # Ax experiment setup
-MAX_TRIALS = 6
+MAX_TRIALS = 10
 PARALLEL_RUNS = 1 # 1 => serial
 FAILURE_TOLERANCE = 0.3 # 0.3 => exception raised if 30% of trials fail
 TIME_BW_POLLS = 50     # In seconds
 
 # Max number of simpleFoam iterations
-MAX_ITER = 4000
+MAX_ITER = 2000
 
 # Number of intervals to wait before writing out data
 write_control = 1000

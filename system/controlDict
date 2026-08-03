@@ -17,7 +17,7 @@ startTime 0;
 
 stopAt endTime;
 
-endTime 4000;
+endTime 2000;
 
 deltaT 1;
 
@@ -45,5 +45,8 @@ functions
 #include "yPlus"
 #include "solverInfo"
 #include "graphFunctionObject"
+#include "Q"
+#include "vorticity"
+#include "lambda2"
 } 	// ************************************************************************* //
 

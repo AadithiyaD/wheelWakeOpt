@@ -38,12 +38,12 @@ geometry
     {
         type searchableBox;
         min     (1.8 0 -0.4);
-        max     (3.5 0.6 0.4);
+        max     (3.5 0.5 0.4);
     }
     nearWakeRefBox
     {
         type searchableBox;
-        min     (0.15 0 -0.2);
+        min     (0 0 -0.2);
         max     (0.5 0.4 0.2);
     }
     wheel.stl
@@ -246,17 +246,17 @@ castellatedMeshControls
         nearWakeRefBox
         {
             mode inside;
-            levels ((1E15 4));
+            levels ((1E15 5));
         }
         midWakeRefBox
         {
             mode inside;
-            levels ((1E15 3));
+            levels ((1E15 4));
         }
         farfieldRefBox
         {
             mode inside;
-            levels ((1E15 2));
+            levels ((1E15 3));
         }
     }
 
@@ -333,7 +333,7 @@ addLayersControls
     {
         wheel
         {
-            nSurfaceLayers 2;
+            nSurfaceLayers 5;
             // thicknessModel firstAndRelativeFinal;
             // relativeSizes off;
             // firstLayerThickness 2.20e-3;
@@ -366,7 +366,7 @@ addLayersControls
     finalLayerThickness 0.5;
 
     // Expansion factor for layer mesh
-    expansionRatio 1;
+    expansionRatio 1.22;
 
     // Minimum thickness of cell layer. If for any reason layer
     // thickness is smaller than minThickness do not add layer.

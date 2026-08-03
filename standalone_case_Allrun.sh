@@ -3,25 +3,27 @@ cd "${0%/*}" || exit                                # Run from this directory
 . ${WM_PROJECT_DIR:?}/bin/tools/RunFunctions        # Tutorial run functions
 #------------------------------------------------------------------------------
 
-CASE_NAME="test"
+CASE_NAME="5layers"
 
-./Allclean
+# ./standalone_case_Allclean.sh
 
-decompDict="-decomposeParDict system/decomposeParDict"
+# touch test.foam
+
+# decompDict="-decomposeParDict system/decomposeParDict"
 
 # ============ Create mesh =========================================================================
-blockMesh | tee log.blockMesh
+# blockMesh | tee log.blockMesh
 
 decomposePar | tee log.decomposeParMesh
 
-# mpirun -np 4 snappyHexMesh -parallel | tee log.snappyHexMesh
-runParallel snappyHexMesh -overwrite
+# mpirun -np 6 snappyHexMesh -parallel | tee log.snappyHexMesh
+# runParallel snappyHexMesh -parallel
 
 # reconstructParMesh -time 3
 # reconstructPar -time 3    
 
 # checkMesh -allGeometry -allTopology -latestTime -writeAllFields -writeSets vtk | tee log.checkMesh
-# checkMesh -allGeometry -allTopology -parallel -writeAllFields -writeSets vtk | tee log.checkMesh
+# checkMesh -allGeometry -allTopology | tee log.checkMesh
 # ==================================================================================================
 
 # rm -rf constant/polyMesh
@@ -33,13 +35,11 @@ runParallel snappyHexMesh -overwrite
 
 # ============== Solve =============================
 # restore0Dir
-# restore0Dir -processor
+restore0Dir -processor
 
-# decomposePar
+runParallel $decompDict potentialFoam -writephi
 
-# runParallel $decompDict potentialFoam -writephi
-
-# runParallel $decompDict $(getApplication)
+runParallel $decompDict $(getApplication)
 
 # # For reference, the actual parallel command
 # # mpirun -np 4 simpleFoam -parallel
