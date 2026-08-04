@@ -37,7 +37,7 @@ decomposePar | tee log.decomposeParMesh
 # restore0Dir
 restore0Dir -processor
 
-runParallel $decompDict potentialFoam -writephi
+runParallel $decompDict potentialFoam -writephi -writePhi -writep
 
 runParallel $decompDict $(getApplication)
 

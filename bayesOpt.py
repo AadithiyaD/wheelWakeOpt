@@ -82,6 +82,15 @@ class Runner(IRunner):
         # Wait for decompose to finish 
         decompose.wait()
         
+        potentialFoam = Popen(
+            [f'pyFoamRunner.py --procnr={NPROC} potentialFoam -writep -writephi -writePhi -case {os.path.normpath(case_dir)} '],
+            stdin = DEVNULL,
+            stdout= DEVNULL,
+            shell= True
+        )
+        
+        potentialFoam.wait()
+        
         simpleFoam = Popen(
             [f'pyFoamRunner.py --procnr={NPROC} simpleFoam -case {os.path.normpath(case_dir)} '],
             stdin = DEVNULL,

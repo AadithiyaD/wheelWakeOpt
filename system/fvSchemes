@@ -54,6 +54,11 @@ snGradSchemes
     default         corrected;
 }
 
+potentialFlow
+{
+    nNonOrthogonalCorrectors 10;
+}
+
 wallDist
 {
     method          meshWave;
