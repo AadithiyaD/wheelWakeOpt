@@ -11,10 +11,18 @@ from scripts.error_calc import calc_rmse
 
 coeffs = {
     # "betaStar": [0.05, 0.07, 0.11, 0.13],  # Default = 0.09
-    "betaStar": [0.13],
-    "sigmaOmega1": [0.4, 0.45, 0.55, 0.6],  # Default = 0.5
-    "sigmaOmega2": [0.712, 0.784, 0.928, 1.0],  # Default = 0.856
+    # "betaStar": [0.13],
+    # "sigmaOmega1": [0.4, 0.45, 0.55, 0.6],  # Default = 0.5
+    # "sigmaOmega2": [0.712, 0.784, 0.928, 1.0],  # Default = 0.856
 }
+
+# Add custom runs here by specifying all three coefficients.
+manual_runs = [
+    # Example custom run:
+    {"betaStar": 0.09, "sigmaOmega1": 0.5, "sigmaOmega2": 0.856},
+    {"betaStar": 0.05, "sigmaOmega1": 0.4, "sigmaOmega2": 0.712},
+    {"betaStar": 0.03, "sigmaOmega1": 0.3, "sigmaOmega2": 0.5},
+]
 
 # Map the manual DOE parameter names to the keys used inside turbulenceProperties.
 TURB_COEFF_MAP = {
@@ -31,7 +39,7 @@ DEFAULT_TURB_COEFFS = {
 }
 
 
-def setup_and_run_case(case_dir, coeff_name, coeff_value):
+def setup_and_run_case(case_dir, coeff_name=None, coeff_value=None, custom_coeffs=None):
     """Create a fresh case directory, update the turbulence coefficients, run it, and score it."""
     os.makedirs(case_dir, exist_ok=True)
     shutil.rmtree(case_dir, ignore_errors=True)
@@ -50,10 +58,20 @@ def setup_and_run_case(case_dir, coeff_name, coeff_value):
     )
     coeffs_dict = turb_props["RAS"]["kOmegaSSTCoeffs"]
 
-    # Start from the defaults and overwrite the coefficient being tested.
+    # Start from the defaults and overwrite the coefficient(s) being tested.
     for key, value in DEFAULT_TURB_COEFFS.items():
         coeffs_dict[key] = value
-    coeffs_dict[TURB_COEFF_MAP[coeff_name]] = coeff_value
+
+    if custom_coeffs is not None:
+        for param_name, param_value in custom_coeffs.items():
+            if param_name not in TURB_COEFF_MAP:
+                raise KeyError(f"Unknown turbulence coefficient: {param_name}")
+            coeffs_dict[TURB_COEFF_MAP[param_name]] = param_value
+    else:
+        if coeff_name is None or coeff_value is None:
+            raise ValueError("coeff_name and coeff_value are required when custom_coeffs is not provided")
+        coeffs_dict[TURB_COEFF_MAP[coeff_name]] = coeff_value
+
     turb_props.writeFile()
 
     decompose = Popen(
@@ -107,53 +125,104 @@ def setup_and_run_case(case_dir, coeff_name, coeff_value):
     return total_rmse
 
 
+has_coeff_variations = any(values for values in coeffs.values())
 results = {coeff_name: [] for coeff_name in coeffs}
+if manual_runs:
+    results["manual_runs"] = []
+
 trial_rows = []
 trial_index = 0
-for coeff_name, values in coeffs.items():
-    for coeff_value in values:
-        case_dir = os.path.join("cases", f"manual_doe_trial_{trial_index+3}")
-        print(f"Running {coeff_name}={coeff_value} in {case_dir}")
-        try:
-            rmse_value = setup_and_run_case(case_dir, coeff_name, coeff_value)
-            trial_status = "COMPLETED"
-        except Exception as exc:
-            rmse_value = None
-            trial_status = f"FAILED: {exc}"
-            print(f"Trial failed: {exc}")
 
-        results[coeff_name].append([coeff_value, rmse_value])
+if has_coeff_variations:
+    for coeff_name, values in coeffs.items():
+        for coeff_value in values:
+            case_dir = os.path.join("cases", f"manual_doe_trial_{trial_index+3}")
+            print(f"Running {coeff_name}={coeff_value} in {case_dir}")
+            try:
+                rmse_value = setup_and_run_case(case_dir, coeff_name, coeff_value)
+                trial_status = "COMPLETED"
+            except Exception as exc:
+                rmse_value = None
+                trial_status = f"FAILED: {exc}"
+                print(f"Trial failed: {exc}")
 
-        trial_row = {
-            "trial_name": os.path.basename(case_dir),
-            "trial_status": trial_status,
-            "TOTAL_RMSE": rmse_value,
-            "betaStar": DEFAULT_TURB_COEFFS["betaStar"],
-            "sigmaOmega1": DEFAULT_TURB_COEFFS["alphaOmega1"],
-            "sigmaOmega2": DEFAULT_TURB_COEFFS["alphaOmega2"],
-        }
+            results[coeff_name].append([coeff_value, rmse_value])
 
-        if coeff_name == "betaStar":
-            trial_row["betaStar"] = coeff_value
-        elif coeff_name == "sigmaOmega1":
-            trial_row["sigmaOmega1"] = coeff_value
-        elif coeff_name == "sigmaOmega2":
-            trial_row["sigmaOmega2"] = coeff_value
+            trial_row = {
+                "trial_name": os.path.basename(case_dir),
+                "trial_status": trial_status,
+                "TOTAL_RMSE": rmse_value,
+                "betaStar": DEFAULT_TURB_COEFFS["betaStar"],
+                "sigmaOmega1": DEFAULT_TURB_COEFFS["alphaOmega1"],
+                "sigmaOmega2": DEFAULT_TURB_COEFFS["alphaOmega2"],
+            }
 
-        trial_rows.append(trial_row)
+            if coeff_name == "betaStar":
+                trial_row["betaStar"] = coeff_value
+            elif coeff_name == "sigmaOmega1":
+                trial_row["sigmaOmega1"] = coeff_value
+            elif coeff_name == "sigmaOmega2":
+                trial_row["sigmaOmega2"] = coeff_value
 
-        output_path = os.path.join("cases", "manual_doe_results.json")
-        with open(output_path, "w", encoding="utf-8") as handle:
-            json.dump(results, handle, indent=2)
-        print(f"Saved results to {output_path}")
+            trial_rows.append(trial_row)
 
-        csv_output_path = os.path.join("cases", "manual_doe_results.csv")
-        with open(csv_output_path, "w", encoding="utf-8", newline="") as handle:
-            writer = csv.DictWriter(
-                handle,
-                fieldnames=["trial_name", "trial_status", "TOTAL_RMSE", "betaStar", "sigmaOmega1", "sigmaOmega2"],
-            )
-            writer.writeheader()
-            writer.writerows(trial_rows)
-        print(f"Saved CSV results to {csv_output_path}")
-        trial_index += 1
+            output_path = os.path.join("cases", "manual_doe_results.json")
+            with open(output_path, "w", encoding="utf-8") as handle:
+                json.dump(results, handle, indent=2)
+            print(f"Saved results to {output_path}")
+
+            csv_output_path = os.path.join("cases", "manual_doe_results.csv")
+            with open(csv_output_path, "w", encoding="utf-8", newline="") as handle:
+                writer = csv.DictWriter(
+                    handle,
+                    fieldnames=["trial_name", "trial_status", "TOTAL_RMSE", "betaStar", "sigmaOmega1", "sigmaOmega2"],
+                )
+                writer.writeheader()
+                writer.writerows(trial_rows)
+            print(f"Saved CSV results to {csv_output_path}")
+            trial_index += 1
+else:
+    print("Skipping individual coefficient variations because coeffs is empty.")
+
+for custom_run in manual_runs:
+    case_dir = os.path.join("cases", f"manual_doe_custom_{trial_index}")
+    print(f"Running custom coefficients {custom_run} in {case_dir}")
+    try:
+        rmse_value = setup_and_run_case(case_dir, custom_coeffs=custom_run)
+        trial_status = "COMPLETED"
+    except Exception as exc:
+        rmse_value = None
+        trial_status = f"FAILED: {exc}"
+        print(f"Trial failed: {exc}")
+
+    results["manual_runs"].append([custom_run, rmse_value])
+
+    trial_row = {
+        "trial_name": os.path.basename(case_dir),
+        "trial_status": trial_status,
+        "TOTAL_RMSE": rmse_value,
+        "betaStar": DEFAULT_TURB_COEFFS["betaStar"],
+        "sigmaOmega1": DEFAULT_TURB_COEFFS["alphaOmega1"],
+        "sigmaOmega2": DEFAULT_TURB_COEFFS["alphaOmega2"],
+    }
+    for coeff_key in ["betaStar", "sigmaOmega1", "sigmaOmega2"]:
+        if coeff_key in custom_run:
+            trial_row[coeff_key] = custom_run[coeff_key]
+
+    trial_rows.append(trial_row)
+
+    output_path = os.path.join("cases", "manual_doe_results.json")
+    with open(output_path, "w", encoding="utf-8") as handle:
+        json.dump(results, handle, indent=2)
+    print(f"Saved results to {output_path}")
+
+    csv_output_path = os.path.join("cases", "manual_doe_results.csv")
+    with open(csv_output_path, "w", encoding="utf-8", newline="") as handle:
+        writer = csv.DictWriter(
+            handle,
+            fieldnames=["trial_name", "trial_status", "TOTAL_RMSE", "betaStar", "sigmaOmega1", "sigmaOmega2"],
+        )
+        writer.writeheader()
+        writer.writerows(trial_rows)
+    print(f"Saved CSV results to {csv_output_path}")
+    trial_index += 1
