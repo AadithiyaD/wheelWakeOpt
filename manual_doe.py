@@ -10,7 +10,8 @@ from centralControl import NPROC, PVPYTHON_SCRIPT
 from scripts.error_calc import calc_rmse
 
 coeffs = {
-    "betaStar": [0.05, 0.07, 0.11, 0.13],  # Default = 0.09
+    # "betaStar": [0.05, 0.07, 0.11, 0.13],  # Default = 0.09
+    "betaStar": [0.13],
     "sigmaOmega1": [0.4, 0.45, 0.55, 0.6],  # Default = 0.5
     "sigmaOmega2": [0.712, 0.784, 0.928, 1.0],  # Default = 0.856
 }
@@ -111,7 +112,7 @@ trial_rows = []
 trial_index = 0
 for coeff_name, values in coeffs.items():
     for coeff_value in values:
-        case_dir = os.path.join("cases", f"manual_doe_trial_{trial_index}")
+        case_dir = os.path.join("cases", f"manual_doe_trial_{trial_index+3}")
         print(f"Running {coeff_name}={coeff_value} in {case_dir}")
         try:
             rmse_value = setup_and_run_case(case_dir, coeff_name, coeff_value)
