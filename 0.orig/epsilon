@@ -9,56 +9,47 @@ FoamFile
 {
     version     2.0;
     format      ascii;
-    class       volVectorField;
-    object      U;
+    class       volScalarField;
+    object      epsilon;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-dimensions      [0 1 -1 0 0 0 0];
+dimensions      [0 2 -3 0 0 0 0];
 
-#include        "include/initialConditions"
-
-internalField   uniform (0 0 0);
+internalField   uniform 1.08e-4;
 
 boundaryField
 {
     #includeEtc "caseDicts/setConstraintTypes"
-    
+
     inlet
     {
         type            fixedValue;
-        value           uniform $flowVelocity;
+        value           uniform 1.08e-4;
     }
     outlet
     {
         type            zeroGradient;
     }
+    "(wheel|contactPatchSide)"
+    {
+        type            epsilonWallFunction;
+        value           $internalField;
+    }
     ground
     {
-        type            fixedValue;
-        value           uniform $flowVelocity;
-    }
-    wheel
-    {
-        type            rotatingWallVelocity;
-        origin          (0 0.1657 0);
-        axis            (0 0 1);
-        omega           181.79345706666666;
-    }
-    contactPatchSide
-    {
-        type            noSlip;
+        type            epsilonWallFunction;
+        value           uniform 1.08e-4;
     }
     "(top|side1)"
     {
-        type            slip;
+        type            zeroGradient;
     }
     symmetry
     {
         type            symmetry;
     }
-    
 }
 
-// ************************************************************************* //
 
+// ************************************************************************* //
