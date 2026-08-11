@@ -2,6 +2,7 @@ processor*/
 venv/
 .venv/
 [0-9]*/
+!0.orig
 log.*
 # thoughts.md
 */polyMesh/*
