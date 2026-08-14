@@ -24,7 +24,7 @@ client = Client()
 # preexisting_trials = [
 #     (
 #         {"a1": 0.31, "betaStar": 0.09,},
-#         {"FINAL_ERROR": 3.007},
+#         {"TOTAL_RMSE": 3.007},
 #     )
 # ]
 

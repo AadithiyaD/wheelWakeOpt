@@ -29,6 +29,10 @@ to see how much uncertainty is the mesh introducing? In a way, by calculating RM
 
 	RMSE is still kind of big, not much improvement. Maybe look to make the mesh more refined in concentrated areas? i.e near known shedding points? Or maybe automatic mesh adaption?
 
+*8-8-26 -* Check the translating case, and check the flow structures once more, actually look at them.
+
+*10-8-26 -* I took a step back. Starting from the top, the point of the CFD is to compare with wind tunnel data and optimize wake prediction w.r.t the same. The goal here is NOT to match to reality, but to match the provided wind tunnel geometry. Therefore, if the provided CAD was actually put into the wind tunnel, then the contact patch step is probably stationary. The paper mentions that 3D inserts were made to bridge the gap between the wheel and the roller ground and provide light contact,so this should refer to the 'contactPatch' in the model, and the right B.C here would be to keep it as a stationary no-slip wall.
+
 ## Stuff about model
 - This wheel is **330mm diameter** and **180 mm tread width** 
 - Contact patch = **1069 mm width** and **105 mm height**
@@ -102,7 +106,7 @@ How much of an issue is it that the contact patch does not have layers?
 - [x] Start GCI
 	- [x] Coarse results done
 		- [x] Medium results done
-		- [] Fine results done
+		- [x] Fine results done
 	- [x] use symmetry conditiion	
 	- [x] Get stuff needed for GCI study
 	- [x] Calculate error metric
@@ -135,5 +139,6 @@ How much of an issue is it that the contact patch does not have layers?
 				- BIG FUCKING MISTAKE - this produced an rmse of 27 and a completely weird looking vortex structure
 		- [x] error function
 			- Since only velocity expt data is available, not much else i can do but calc rmse of velocity prediction
-		- [] Optimization parameters
+		- [x] Optimization parameters
 			- From the paper "bounds-et-al-2020-improved-cfd-prediction-of-flows-past-simplified-and-real-life-automotive-bodies-using-modified" it would seem that beta star and sigma omega 1,2 play a bigger role in wake characteristics than a1 (though to be fair, they have not investigated a1). Should probably include these coeffs as well in the opt paramss
+				- Again, not much improvement. Need to rethink approach
