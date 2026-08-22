@@ -287,8 +287,10 @@ client.configure_runner(runner=runner)
 client.configure_metrics(metrics=[error_metric])
 
 for parameters, data in preexisting_trials:
-    # Attach the parameterization to the Client as a trial and immediately complete it with the preexisting data
-    trial_index = client.attach_trial(parameters=[betaStar, sigmaOmega1, sigmaOmega2])
+    # Attach the parameterization to the Client as a trial 
+    trial_index = client.attach_trial(parameters=parameters)
+    
+    # and immediately complete it with the preexisting data
     client.complete_trial(trial_index=trial_index, raw_data=data)
 
 client.run_trials(
