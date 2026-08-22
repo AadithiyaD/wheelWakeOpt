@@ -62,7 +62,7 @@ if __name__ == "__main__":
         x2_raw = data[:, 14]
         Ux_raw = data[:, 2]
             
-        plot_title = "Contour plot of Ux (m/s) CFD data at X = 0.495, medium grid"
+        plot_title = f"Contour plot of Ux (m/s) CFD data at X = {x_pos}, {caseName}"
         img_save_name = f"Ux_X{pos}_{caseName}.png"
         img_save_at = Path(f'images/{caseName}')
         

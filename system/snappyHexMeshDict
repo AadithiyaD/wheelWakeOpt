@@ -226,37 +226,37 @@ castellatedMeshControls
         wheelRefRegion
         {
             mode inside;
-            levels ((1E15 5));
+            levels ((1E15 4));
         }
         rim1
         {
             mode inside;
-            levels ((1E15 5));
+            levels ((1E15 4));
         }
         rim2
         {
             mode inside;
-            levels ((1E15 5));
+            levels ((1E15 4));
         }
         contactPatchRefinement_comp
         {
             mode inside;
-            levels ((1E15 10));
+            levels ((1E15 6));
         }
         nearWakeRefBox
         {
             mode inside;
-            levels ((1E15 5));
+            levels ((1E15 3));
         }
         midWakeRefBox
         {
             mode inside;
-            levels ((1E15 4));
+            levels ((1E15 2));
         }
         farfieldRefBox
         {
             mode inside;
-            levels ((1E15 3));
+            levels ((1E15 1));
         }
     }
 
@@ -379,9 +379,9 @@ addLayersControls
     // Note: changed(corrected) w.r.t 1.7.x! (didn't do anything in 1.7.x)
     nGrow -1;
 
-    // Adds layers over num_of_layers/nOuterIters iterations, rather than in 1 pass
+    // Adds layers over nOuterIters iterations, rather than in 1 pass
     // Set nGrow to -1 if using this
-    nOuterIter 2;
+    nOuterIter 5;
 
     // Advanced settings
     // When not to extrude surface. 0 is flat surface, 90 is when two faces

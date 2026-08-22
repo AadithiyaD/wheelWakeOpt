@@ -1,14 +1,46 @@
 I messedup and used the fine mesh, instead of the medium mesh. 
 I could have been saving on so much time right now, damnn it all
 
-Fine mesh cells = 7720213
-wheel ref, near wake ref, mid wkae ref, far ref = 6,6,5,4
+Mesh_f cells = 7,720,213
+wheel ref (inclusive rimRefs),contactPatchRef, near wake ref, mid wkae ref, far ref = 6,9,6,5,4
 TOTAL_RMSE = 15.445
+TOTAL_RMSE best coeffs = 14.7
 
-Medium mesh cells = 5.9M target for r=1.3 // 5.1M for r=1.5
-wheel ref, near wake ref, mid wkae ref, far ref = 5,5,4,3
-TOTAL_RMSE = 
+Mesh1 mesh cells = 3,985,896
+wheel ref (inclusive rimRefs), contactPatchRef, near wake ref, mid wkae ref, far ref = 5,8,4,3,1
+TOTAL_RMSE default turbulence coeffs = 15.071
+TOTAL_RMSE best_coeffs = 14.863
 
-Coarse mesh cells = 4.5M target // 3.4M for r=1.5
-wheel ref, near wake ref, mid wkae ref, far ref = 4,4,3,2
-TOTAL_RMSE = 
+--------------------------------------------------------------------------------------------------
+
+MeshV1 cells = 5,170,522
+wheel ref (inclusive rimRefs), contactPatchRef, near wake ref, mid wkae ref, far ref = Same as MeshV3
+blockMeshDict = (165 55 66)
+TOTAL_RMSE default turbulence coeffs = 15.143524730979902
+
+MeshV2 cells = 1,781,589
+wheel ref (inclusive rimRefs), contactPatchRef, near wake ref, mid wkae ref, far ref = Same as MeshV3
+blockMeshDict = (110 37 44)
+TOTAL_RMSE default turbulence coeffs = 14.718514775409488
+
+MeshV3 cells = 731,465
+blockMeshDict = (77 26 31)
+wheel ref (inclusive rimRefs), contactPatchRef, near wake ref, mid wkae ref, far ref = 4,6,3,2,1
+TOTAL_RMSE default turbulence coeffs = 14.57
+
+
+
+--------------------------------------------------------------------------------------------------
+Mesh3 cells = 486,898
+wheel ref (inclusive rimRefs), contactPatchRef, near wake ref, mid wkae ref, far ref = 4,5,2,1,1
+TOTAL_RMSE default turbulence coeffs = 13.956
+TOTAL_RMSE best_coeffs = 14.067
+
+Mesh4 cells = 305,943 ------- INVALID AS WHEEL IS NOT PROPERLY CAPTURED
+wheel ref (inclusive rimRefs), contactPatchRef, near wake ref, mid wkae ref, far ref = 3,4,1,1,1
+TOTAL_RMSE default turbulence coeffs = 12.819
+TOTAL_RMSE best_coeffs = 12.8033
+
+
+
+best_coeffs => betaStar	sigmaOmega1	sigmaOmega2 => 0.080322173	0.409843341	0.88724201

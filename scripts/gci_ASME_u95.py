@@ -21,11 +21,11 @@ caseName = sys.argv[1] if len(sys.argv) > 1 else "default"
 #*           for a solutionList = [6.06, 5.97, 5.86], p=1.63
 #*           for solutionList = [6.063, 5.972, 5.863], p=1.56
 #* The ASME standard lists solutionList 1, but shows a p=1.53
-solutionList = [1.0, 1.5, 3.25]
+solutionList = [15.143524730979902, 14.718514775409488, 14.894821251311619]
 
 # Factor of safety for GCI. Use 3 if using unstructured grid refinement
 # 1.25 otherwise
-Fs = 1.25
+Fs = 3.0
 
 # Fixed point iterations and convergence tolerance
 fixedPointIterations = 1000
@@ -40,14 +40,24 @@ meshNameDict = {
     "3": 0
 }
 
+def readMeanCellVolume(filePath) -> np.ndarray:
+    '''
+        Calculates mean cell volume from given cellVolumes file
+        Args:
+            filePath: Path to cellVolumes file
+    '''
+    fileText = filePath.read_text()
+    valuesStart = fileText.index("(", fileText.index("internalField")) + 1
+    valuesEnd = fileText.index(")", valuesStart)
+    values = np.fromstring(fileText[valuesStart:valuesEnd], sep=" ")
+    return values.mean()
+
 # Step 1 - Calculate representative mesh size h
 for meshName,_ in meshNameDict.items():
-    VList = ParsedParameterFile(
-        Path(f"/home/durai/OpenFOAM/durai-v2506/run/wheelWakeOpt/forGCI/V{meshName}"),
-        treatBinaryAsASCII=True,
+    meanCellVolume = readMeanCellVolume(
+        Path(f"/home/durai/OpenFOAM/durai-v2506/run/wheelWakeOpt/forGCI/V{meshName}")
     )
-    V = VList["internalField"]
-    h = (sum(V) / len(V))**(1/3)
+    h = meanCellVolume**(1/3)
     meshNameDict[meshName] = h 
 
 # Step 2 - Select three sets of grids, with a refinement factor r and get the desired result variable phi .

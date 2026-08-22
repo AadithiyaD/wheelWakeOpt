@@ -5,7 +5,8 @@ import os
 trialDir = sys.argv[1] if len(sys.argv) > 1 else "default"
 trialName = os.path.basename(trialDir)
 
-trialFoam = OpenFOAMReader(registrationName=f'{trialName}.foam', FileName=f'/home/durai/OpenFOAM/durai-v2506/run/wheelWakeOpt/{trialDir}/{trialName}.foam')
+# trialFoam = OpenFOAMReader(registrationName=f'{trialName}.foam', FileName=f'/home/durai/OpenFOAM/durai-v2506/run/wheelWakeOpt/{trialDir}/{trialName}.foam')
+trialFoam = OpenFOAMReader(registrationName=f'{trialDir}.foam', FileName=f'/home/durai/OpenFOAM/durai-v2506/run/wheelWakeOpt/{trialDir}foam') # For man run
 
 reflect1 = Reflect(registrationName='Reflect1', Input=trialFoam)
 
@@ -27,13 +28,17 @@ slice1.SliceType.Origin = [0.33, 0.0, 0.0]
 
 slice1.UpdatePipeline()
 
-SaveData(f'/home/durai/OpenFOAM/durai-v2506/run/wheelWakeOpt/{trialDir}/X_0.33.csv', proxy=slice1, PointDataArrays=['U', 'UNear', 'k', 'nut', 'omega', 'p'],
-    FieldDataArrays=['CasePath'])
+# SaveData(f'/home/durai/OpenFOAM/durai-v2506/run/wheelWakeOpt/{trialDir}/X_0.33.csv', proxy=slice1, PointDataArrays=['U', 'UNear', 'k', 'nut', 'omega', 'p'],
+#     FieldDataArrays=['CasePath'])
+SaveData(f'/home/durai/OpenFOAM/durai-v2506/run/wheelWakeOpt/images/{trialDir}/X_0.33.csv', proxy=slice1, PointDataArrays=['U', 'UNear', 'k', 'nut', 'omega', 'p'],
+    FieldDataArrays=['CasePath']) # For man run
 
 slice2 = Slice(registrationName='Slice2', Input=clip1)
 slice2.SliceType.Origin = [0.495, 0.0, 0.0]
 
 slice2.UpdatePipeline()
 
-SaveData(f'/home/durai/OpenFOAM/durai-v2506/run/wheelWakeOpt/{trialDir}/X_0.495.csv', proxy=slice2, PointDataArrays=['U', 'UNear', 'k', 'nut', 'omega', 'p'],
-    FieldDataArrays=['CasePath'])
+# SaveData(f'/home/durai/OpenFOAM/durai-v2506/run/wheelWakeOpt/{trialDir}/X_0.495.csv', proxy=slice2, PointDataArrays=['U', 'UNear', 'k', 'nut', 'omega', 'p'],
+#     FieldDataArrays=['CasePath'])
+SaveData(f'/home/durai/OpenFOAM/durai-v2506/run/wheelWakeOpt/images/{trialDir}/X_0.495.csv', proxy=slice2, PointDataArrays=['U', 'UNear', 'k', 'nut', 'omega', 'p'],
+    FieldDataArrays=['CasePath']) # For man run
