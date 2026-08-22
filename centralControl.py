@@ -8,7 +8,7 @@ import os
 
 # Ax experiment setup
 MAX_TRIALS = 10
-PARALLEL_RUNS = 1 # 1 => serial
+PARALLEL_RUNS = 2 # 1 => serial
 FAILURE_TOLERANCE = 0.3 # 0.3 => exception raised if 30% of trials fail
 TIME_BW_POLLS = 50     # In seconds
 
