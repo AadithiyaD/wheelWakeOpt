@@ -40,16 +40,21 @@ meshNameDict = {
     "3": 0
 }
 
-def readMeanCellVolume(filePath) -> np.ndarray:
+def readMeanCellVolume(filePath):
     '''
         Calculates mean cell volume from given cellVolumes file
         Args:
             filePath: Path to cellVolumes file
     '''
     fileText = filePath.read_text()
+    
+    # Find the first "(" after "internalField" and the next ")" to extract the values
     valuesStart = fileText.index("(", fileText.index("internalField")) + 1
     valuesEnd = fileText.index(")", valuesStart)
+    
+    # Calculate and return mean of the values between the parentheses
     values = np.fromstring(fileText[valuesStart:valuesEnd], sep=" ")
+    print(f"Number of cells in {filePath.name}: {len(values)}")
     return values.mean()
 
 # Step 1 - Calculate representative mesh size h
@@ -84,7 +89,7 @@ qP = 0
 p  = 0
 
 for i in range(fixedPointIterations):
-    p_new = (1 / np.log(r_21)) * (np.log(abs(epsilon_32 / epsilon_21)) + qP)
+    p_new = (1 / np.log(r_21)) * abs((np.log(abs(epsilon_32 / epsilon_21)) + qP))
     
     # If r constant, q(P) is 0
     if r_21 == r_32:
@@ -129,6 +134,7 @@ gci_32 = (Fs * e_32_a)/((r_32**p) - 1)
 print(f"Observed order of accuracy = {p:.4f}")
 print(f"Refinement factor r_21 = {r_21:.4f}")
 print(f"Refinement factor r_32 = {r_32:.4f}")
+print(f"Extrapolated phi_21_ex = {phi_21_ex:.4f}")
 print(f"Extrapolated relative error e_21_ext % = {e_21_ext*100:.4f}")
 print(f"Grid convergence index GCI_21 % = {gci_21*100:.4f}")
 print(f"Extrapolated relative error e_32_ext % = {e_32_ext*100:.4f}")
