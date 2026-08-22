@@ -20,18 +20,49 @@ client = Client()
 
 # ===================================================================================================
 
-# # Add data from any pre exisiting trials
-# preexisting_trials = [
-#     (
-#         {"a1": 0.31, "betaStar": 0.09,},
-#         {"TOTAL_RMSE": 3.007},
-#     )
-# ]
-
-# for parameters, data in preexisting_trials:
-#     # Attach the parameterization to the Client as a trial and immediately complete it with the preexisting data
-#     trial_index = client.attach_trial(parameters=[a1, betaStar])
-#     client.complete_trial(trial_index=trial_index, raw_data=data)
+# Add data from any pre-existing trials
+preexisting_trials = [
+    (
+        {"betaStar": 0.09, "sigmaOmega1": 0.5, "sigmaOmega2": 0.856},
+        {"TOTAL_RMSE": 14.892201262697139},
+    ),
+    (
+        {"betaStar": 0.11771830081939698, "sigmaOmega1": 0.5123859286308289, "sigmaOmega2": 0.7448952572345733},
+        {"TOTAL_RMSE": 14.783879883022014},
+    ),
+    (
+        {"betaStar": 0.05879643544554711, "sigmaOmega1": 0.4235952913761139, "sigmaOmega2": 0.8562350478768348},
+        {"TOTAL_RMSE": 14.849035873343762},
+    ),
+    (
+        {"betaStar": 0.07692515857517719, "sigmaOmega1": 0.5945613663643599, "sigmaOmega2": 0.8115444962084293},
+        {"TOTAL_RMSE": 14.833491858315751},
+    ),
+    (
+        {"betaStar": 0.09585666842758656, "sigmaOmega1": 0.4819365257397294, "sigmaOmega2": 0.9341342871189118},
+        {"TOTAL_RMSE": 14.900662685563077},
+    ),
+    (
+        {"betaStar": 0.10503554542097225, "sigmaOmega1": 0.5723664859307134, "sigmaOmega2": 0.730182550461256},
+        {"TOTAL_RMSE": 14.912429590575147},
+    ),
+    (
+        {"betaStar": 0.12395389425880628, "sigmaOmega1": 0.5012908062741086, "sigmaOmega2": 0.733392790239503},
+        {"TOTAL_RMSE": 14.351269204418541},
+    ),
+    (
+        {"betaStar": 0.1199682455396507, "sigmaOmega1": 0.5171386737732502, "sigmaOmega2": 0.8481593024400778},
+        {"TOTAL_RMSE": 14.783898240410796},
+    ),
+    (
+        {"betaStar": 0.1259106644213064, "sigmaOmega1": 0.4977196378393798, "sigmaOmega2": 0.7286890273250077},
+        {"TOTAL_RMSE": 14.57531284213221},
+    ),
+    (
+        {"betaStar": 0.12388747863880833, "sigmaOmega1": 0.47220554437371115, "sigmaOmega2": 0.712},
+        {"TOTAL_RMSE": 14.645118275713784},
+    ),
+]
 
 class Runner(IRunner):
     def __init__(self) -> None:
@@ -243,7 +274,7 @@ class ErrorMetric(IMetric):
 client.configure_experiment(
     parameters=[BETASTAR, SIGMAOMEGA1, SIGMAOMEGA2],
     name="3D Rotating Wheel Wake Calibration",
-    description="Optimising the wake prediction behind a 3D rotatin wheel with the k-omega SST model",
+    description="Optimising the wake prediction behind a 3D rotating wheel with the k-omega SST model",
     owner="me"
 )
 
@@ -254,6 +285,11 @@ client.configure_optimization(objective="-TOTAL_RMSE")
 
 client.configure_runner(runner=runner)
 client.configure_metrics(metrics=[error_metric])
+
+for parameters, data in preexisting_trials:
+    # Attach the parameterization to the Client as a trial and immediately complete it with the preexisting data
+    trial_index = client.attach_trial(parameters=[betaStar, sigmaOmega1, sigmaOmega2])
+    client.complete_trial(trial_index=trial_index, raw_data=data)
 
 client.run_trials(
     max_trials=MAX_TRIALS,
