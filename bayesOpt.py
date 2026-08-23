@@ -13,6 +13,7 @@ from ax.api.protocols.runner import IRunner, TrialStatus
 from ax.service.utils.report_utils import exp_to_df
 from scripts.error_calc import calc_rmse
 import plotly.io as pio
+from ax.analysis.plotly.parallel_coordinates import ParallelCoordinatesPlot
 
 # ===================================================================================================
 # Initialize ax client
@@ -346,8 +347,8 @@ def save_card(card, card_index):
                     fig.write_html(html_file)
                     return
                 except Exception as e:
-                    # print(f"!!! enountered error during html write - {e}")
-                    pass
+                    print(f"!!! enountered error during html write - {e}")
+                    # pass
             
             # If the blob is already a plotli fig, directly write out html
             elif hasattr(blob, 'write_html'):
