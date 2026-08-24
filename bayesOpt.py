@@ -6,14 +6,17 @@ import os
 import re
 import shutil
 from subprocess import Popen, DEVNULL
+from pathlib import Path
+
 from PyFoam.RunDictionary.ParsedParameterFile import ParsedParameterFile
 from ax.api.client import Client
 from ax.api.protocols.metric import IMetric
-from ax.api.protocols.runner import IRunner, TrialStatus
+from ax.api.protocols.runner import IRunner
+from ax.core.trial_status import TrialStatus
 from ax.service.utils.report_utils import exp_to_df
+from ax.analysis.plotly.plotly_analysis import PlotlyAnalysisCard
 from scripts.error_calc import calc_rmse
-import plotly.io as pio
-from ax.analysis.plotly.parallel_coordinates import ParallelCoordinatesPlot
+
 
 # ===================================================================================================
 # Initialize ax client
@@ -309,8 +312,8 @@ print("Prediction (mean, variance):", prediction)
 experiment = client._experiment
 df = exp_to_df(experiment)
 
-results_dir = 'ax_result_data'
-os.makedirs(results_dir, exist_ok=True)
+results_dir = Path('ax_result_data')
+results_dir.mkdir(exist_ok=True)
 
 df.to_csv(f'{results_dir}/experiment_results.csv', index=False)
 df.to_json(f'{results_dir}/experiment_results.json', indent=2)
@@ -318,54 +321,19 @@ df.to_json(f'{results_dir}/experiment_results.json', indent=2)
 # Generate visualisations
 cards = client.compute_analyses(display=False)
 
-html_dir = f'{results_dir}/html'
-os.makedirs(html_dir, exist_ok=True)
+html_dir = results_dir / 'html'
+html_dir.mkdir(exist_ok=True)
 
-def save_card(card, card_index):
-    """Recursively save cards and their children. Check each
-    card blobs for the attribute write_html and write it out
-    """
-    # Setup name of card and location to save
-    card_name = f"{card_index}_{card.name.replace(' ', '_').replace('/', '_')}"
-    html_file = os.path.join(html_dir, f"{card_name}.html")
-    
-    # Check if this is a card group with child
-    if hasattr(card, 'children') and card.children:
-        for i, child_card in enumerate(card.children):
-            save_card(child_card, i)
-        return
-    
-    try:
-        # Get card blob, as it contains the plotly figs
-        if hasattr(card, 'blob') and card.blob is not None:
-            blob = card.blob
-            
-            # If blob is json, parse with plotly and write out html
-            if isinstance(blob, str):
-                try:
-                    fig = pio.from_json(value=blob, skip_invalid=True)
-                    fig.write_html(html_file)
-                    return
-                except Exception as e:
-                    print(f"!!! enountered error during html write - {e}")
-                    # pass
-            
-            # If the blob is already a plotli fig, directly write out html
-            elif hasattr(blob, 'write_html'):
-                blob.write_html(html_file)
-                return
-    
-        # for other attributes
-        for attr_name in ['fig', 'figure', '_blob']:
-            if hasattr(card, attr_name):
-                attr_value = getattr(card, attr_name)
-                if attr_name is not None and hasattr(attr_value, 'write_html'):
-                    attr_value.write_html(html_file)
-                    return
-    
-    except Exception as e:
-        print(f"!!! error - {e}")
+for card_index, card in enumerate(
+    leaf_card
+    for card_group in cards
+    for leaf_card in card_group.flatten()
+):
+    card_name = card.title.replace(' ', '_').replace('/', '_')
+    html_file = html_dir / f'{card_index}_{card_name}.html'
 
-for i, card in enumerate(cards):
-    save_card(card, i)
+    if isinstance(card, PlotlyAnalysisCard):
+        card.get_figure().write_html(html_file)
+    else:
+        html_file.write_text(card._repr_html_(), encoding='utf-8')
 
