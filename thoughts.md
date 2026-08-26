@@ -33,6 +33,8 @@ to see how much uncertainty is the mesh introducing? In a way, by calculating RM
 
 *10-8-26 -* I took a step back. Starting from the top, the point of the CFD is to compare with wind tunnel data and optimize wake prediction w.r.t the same. The goal here is NOT to match to reality, but to match the provided wind tunnel geometry. Therefore, if the provided CAD was actually put into the wind tunnel, then the contact patch step is probably stationary. The paper mentions that 3D inserts were made to bridge the gap between the wheel and the roller ground and provide light contact,so this should refer to the 'contactPatch' in the model, and the right B.C here would be to keep it as a stationary no-slip wall.
 
+*25-8-26 -* It would seem that i need to clip my experimental data. The bottom 0.02 is clearly spurious noise and needs to be chopped off. At Z=0.08, it also looks like there is noisy measurement, and this is where the wake of the mounts would be encountered. Two options - Either i can do something to clip/smooth out this data, or I could use the mounts in my CFD. I think first option is going to be simpler 
+
 ## Stuff about model
 - This wheel is **330mm diameter** and **180 mm tread width** 
 - Contact patch = **1069 mm width** and **105 mm height**
