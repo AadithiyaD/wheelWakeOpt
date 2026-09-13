@@ -136,9 +136,12 @@ How much of an issue is it that the contact patch does not have layers?
 			- Realizeable k-Epsilon => 16.249
 		- [x] Overall prediction
 			- I think my contact patch should be sliding and not rotating, fixed this.
-				- BIG FUCKING MISTAKE - this produced an rmse of 27 and a completely weird looking vortex structure
+				- this produced an rmse of 27 and a completely weird looking vortex structure
 		- [x] error function
 			- Since only velocity expt data is available, not much else i can do but calc rmse of velocity prediction
 		- [x] Optimization parameters
 			- From the paper "bounds-et-al-2020-improved-cfd-prediction-of-flows-past-simplified-and-real-life-automotive-bodies-using-modified" it would seem that beta star and sigma omega 1,2 play a bigger role in wake characteristics than a1 (though to be fair, they have not investigated a1). Should probably include these coeffs as well in the opt paramss
 				- Again, not much improvement. Need to rethink approach
+		- [] Blend out wake data so as to remove contribution of wheel support structres
+		- [] Investigate impact of each turbulence coeff on wake and choose top 3 vars to modify
+		- [] Use DOE / BO on these vars
