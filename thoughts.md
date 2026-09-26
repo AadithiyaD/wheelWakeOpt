@@ -144,3 +144,16 @@ How much of an issue is it that the contact patch does not have layers?
 		- [x] Optimization parameters
 			- From the paper "bounds-et-al-2020-improved-cfd-prediction-of-flows-past-simplified-and-real-life-automotive-bodies-using-modified" it would seem that beta star and sigma omega 1,2 play a bigger role in wake characteristics than a1 (though to be fair, they have not investigated a1). Should probably include these coeffs as well in the opt paramss
 				- Again, not much improvement. Need to rethink approach
+- Now,
+	- [x] Blend expt data
+		- The blending doesn't actually do much, its much better i think to just set the horizontal limits to |0.2| so that
+			we exclude the portions with the support structure's wake
+	- [] Vary each coeff one at a time and tabulate results
+		- [] Write the control script that does the actual automation for this
+		- [] Need to use funcs from helperfuncs.py in all automation scripts
+	- [] Restructure the entire thing, put central control and bayesOpt also into scripts dir
+	- [] Select 3 most significant coeffs
+	- [] Perform a DOE to see which combos of coeffs to test
+	- [] Fit a response surface to all data points and get optmium prediction
+	- [] Test optimum
+		- Fit point back into Response Surface and test again, keep going until RMSE doesn't decrease
