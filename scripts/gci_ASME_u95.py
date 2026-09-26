@@ -21,7 +21,7 @@ caseName = sys.argv[1] if len(sys.argv) > 1 else "default"
 #*           for a solutionList = [6.06, 5.97, 5.86], p=1.63
 #*           for solutionList = [6.063, 5.972, 5.863], p=1.56
 #* The ASME standard lists solutionList 1, but shows a p=1.53
-solutionList = [15.143524730979902, 14.718514775409488, 14.894821251311619]
+solutionList = [10.181977482846257, 9.73289793843447, 11.400500457186109]
 
 # Factor of safety for GCI. Use 3 if using unstructured grid refinement
 # 1.25 otherwise

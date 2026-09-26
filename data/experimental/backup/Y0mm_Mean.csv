@@ -6,7 +6,7 @@
 # 2,2,,
 # Streamwise Location, Location from wheel centre of rotation, Streamwise velocity, Vertical velocity
 # m, m, m/s, m/s
-x, z, Vx, Vz
+# x, z, Vx, Vz
 0.55171,0.213539,33.4652,-0.631993
 0.550244,0.213539,33.5424,-0.679697
 0.548778,0.213539,33.4747,-0.688918

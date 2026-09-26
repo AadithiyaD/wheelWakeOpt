@@ -20,7 +20,7 @@ col 2 -> Vx
 def plot_contour_filled(x1_raw: np.ndarray, x2_raw: np.ndarray , u_raw: np.ndarray, 
                         plot_title: str,
                         img_save_name: str = 'contourPlot.png',
-                        img_save_at: Path = './images/', 
+                        img_save_at: Path = Path('./images/'), 
                         show: bool = False, resolution: int = 100) -> None:
     '''
     Plots and saves a contour plot for given input

@@ -33,6 +33,8 @@ to see how much uncertainty is the mesh introducing? In a way, by calculating RM
 
 *10-8-26 -* I took a step back. Starting from the top, the point of the CFD is to compare with wind tunnel data and optimize wake prediction w.r.t the same. The goal here is NOT to match to reality, but to match the provided wind tunnel geometry. Therefore, if the provided CAD was actually put into the wind tunnel, then the contact patch step is probably stationary. The paper mentions that 3D inserts were made to bridge the gap between the wheel and the roller ground and provide light contact,so this should refer to the 'contactPatch' in the model, and the right B.C here would be to keep it as a stationary no-slip wall.
 
+*25-8-26 -* It would seem that i need to clip my experimental data. The bottom 0.02 is clearly spurious noise and needs to be chopped off. At Z=0.08, it also looks like there is noisy measurement, and this is where the wake of the mounts would be encountered. Two options - Either i can do something to clip/smooth out this data, or I could use the mounts in my CFD. I think first option is going to be simpler 
+
 ## Stuff about model
 - This wheel is **330mm diameter** and **180 mm tread width** 
 - Contact patch = **1069 mm width** and **105 mm height**
@@ -142,6 +144,16 @@ How much of an issue is it that the contact patch does not have layers?
 		- [x] Optimization parameters
 			- From the paper "bounds-et-al-2020-improved-cfd-prediction-of-flows-past-simplified-and-real-life-automotive-bodies-using-modified" it would seem that beta star and sigma omega 1,2 play a bigger role in wake characteristics than a1 (though to be fair, they have not investigated a1). Should probably include these coeffs as well in the opt paramss
 				- Again, not much improvement. Need to rethink approach
-		- [] Blend out wake data so as to remove contribution of wheel support structres
-		- [] Investigate impact of each turbulence coeff on wake and choose top 3 vars to modify
-		- [] Use DOE / BO on these vars
+- Now,
+	- [x] Blend expt data
+		- The blending doesn't actually do much, its much better i think to just set the horizontal limits to |0.2| so that
+			we exclude the portions with the support structure's wake
+	- [] Vary each coeff one at a time and tabulate results
+		- [] Write the control script that does the actual automation for this
+		- [] Need to use funcs from helperfuncs.py in all automation scripts
+	- [] Restructure the entire thing, put central control and bayesOpt also into scripts dir
+	- [] Select 3 most significant coeffs
+	- [] Perform a DOE to see which combos of coeffs to test
+	- [] Fit a response surface to all data points and get optmium prediction
+	- [] Test optimum
+		- Fit point back into Response Surface and test again, keep going until RMSE doesn't decrease

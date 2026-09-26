@@ -17,3 +17,15 @@ Therefore we can say:
         - $k=2$, since we have oscillatory covergence
         - $u_{num}$ is a $\sigma$ uncertainty estimate
 
+-----------
+
+|        |    phi    |   N_cells   |   r    |  GCI    |    p   | phi_extrapolated |
+|--------|:---------:|:-----------:|:------:|:-------:|:------:|:----------------:|
+|        |           |             |        |         |        |                  |
+| Grid 1 | 15.143524 |   5170522   | 1.4264 | 3.7493% |        |                  |
+| Grid 2 | 14.718514 |   1781589   | 1.3455 |20.2904% | 4.2531 |     10.3092      |
+| Grid 3 | 14.894821 |   731383    | -      | -       |        |                  |
+
+Now that i changed the area of data im looking at , its clear the meshes are not in the asymptotic region.
+Ideally, I'd have to refine it further, but since i want to keep the computation time low, im still gonna
+go ahead with my medium mesh

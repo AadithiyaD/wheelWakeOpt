@@ -31,9 +31,6 @@ SIGMAOMEGA1 = RangeParameterConfig(name="sigmaOmega1", parameter_type="float",
 SIGMAOMEGA2 = RangeParameterConfig(name="sigmaOmega2", parameter_type="float", 
                                 bounds=(0.712, 1.0))
 
-# x/H positions
-# X_BY_H=[1,4,6,10]
-
 # Data comparison locations
 X_POS = [0.33, 0.495]
 Y_POS = [0, 50]
@@ -42,7 +39,6 @@ Y_POS = [0, 50]
 PVPYTHON_SCRIPT = "/home/durai/OpenFOAM/durai-v2506/run/wheelWakeOpt/scripts/extractPlaneInfo.py"
 
 
-# ===============================================================================
 # Dict modification
 decomposeParDict = ParsedParameterFile(
         os.path.join('system', 'decomposeParDict'),

@@ -6,7 +6,7 @@
 # 2,3,,,
 # Location across the tread, Location from wheel centre of rotation, Streamwise velocity, Cross-tread velocity, Vertical velocity
 # m, m, m/s, m/s, m/s
-y, z, Vx, Vy, Vz
+# y, z, Vx, Vy, Vz
 -0.25309,0.0019813,26.08,-1.127,4.6576
 -0.25309,-0.00074236,26.379,-1.2263,4.7085
 -0.25309,-0.003466,26.761,-1.3412,4.744

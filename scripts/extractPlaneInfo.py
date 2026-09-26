@@ -1,3 +1,7 @@
+'''
+Parvaiew pvpython script to extract data from the X=0.33 and X=0.495 planes for a given trial case.
+'''
+
 from paraview.simple import *
 import sys
 import os
