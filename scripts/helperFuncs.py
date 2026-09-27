@@ -3,6 +3,7 @@ import numpy as np
 import pandas as pd
 from scipy.interpolate import griddata
 import matplotlib.pyplot as plt
+from matplotlib.patches import Rectangle
 
 import os
 import shutil
@@ -49,6 +50,36 @@ def loadExptData(pos: int, normal: str,
     
     return df[~exclusionMask].reset_index(drop=True)
 
+# Define the regions where support structure's wake is present
+# [(ymin, ymax, zmin, zmax)]
+# I'm just eyeballing this
+SUPPORT_WAKE_REGION = [
+  (-0.2, -0.17, 0.07, 0.095),
+  (0.17, 0.2, 0.07, 0.095)
+]
+
+
+def smoothData(df: pd.DataFrame, supportWakeRegion=SUPPORT_WAKE_REGION, method="cubic"):
+  '''
+  Smooth out data in contaminated region
+  '''
+  # Create a mask to mark the region where the support struct's wake is present
+  mask = np.zeros(len(df), dtype=bool)
+  for ymin, ymax, zmin, zmax in supportWakeRegion:
+    mask |= df['y'].between(ymin,ymax) & df['z'].between(zmin,zmax)
+  # Create a df for the portion of the velocity data that excludes the support struct wake
+  # Get coords of un and contaminated regions
+  unCont_df = df[~mask]
+  unCont_coords = unCont_df[['y', 'z']].to_numpy()
+  target_coords = df.loc[mask, ['y', 'z']].to_numpy()
+
+  # Do the actual interpolation and return
+  smoothed = df.copy()
+  for velocity in ("Vx", "Vy", "Vz"):
+    interp = griddata(unCont_coords, unCont_df[velocity], target_coords, method=method)
+    smoothed.loc[mask, velocity] = interp
+
+  return smoothed
 
 def plotContour(x1: np.ndarray, x2: np.ndarray, u: np.ndarray,
                 plotTitle: str = "Contour Plot",
@@ -72,6 +103,11 @@ def plotContour(x1: np.ndarray, x2: np.ndarray, u: np.ndarray,
     # ax.contour(x1g, x2g, Ug_i, levels=levels, colors='k', linewidths=0.5)
     cf = ax.tricontourf(x1, x2, u, levels=levels, cmap='viridis', extend='both')
     ax.tricontour(x1, x2, u, levels=levels, colors='k', linewidths=0.5)
+    
+    for ymin, ymax, zmin, zmax in SUPPORT_WAKE_REGION:
+        rect = Rectangle((ymin, zmin), ymax - ymin, zmax - zmin,
+                            fill=False, edgecolor='white', linestyle='--', linewidth=1.5)
+        ax.add_patch(rect)
     
     # I just manually arrived at these limits
     ax.set_xlim(-0.2, 0.2)
@@ -167,7 +203,7 @@ def plotErrorContour(exptData: pd.DataFrame, cfdInterpolated: np.ndarray,
     fig, ax = plt.subplots()
     cf = ax.tricontourf(x1, x2, exptData['abs_error'], levels=levels, cmap='magma', extend='both')
     ax.tricontour(x1, x2, exptData['abs_error'], levels=levels, colors='k', linewidths=0.5)
-
+    
     ax.set_xlim(-0.2, 0.2)
     ax.set_ylim(0.02179, 0.16)
     
@@ -222,7 +258,6 @@ def setupTrial(trialName: str, trialDir: Path = Path("./cases"), coeffName: str 
 
     turbProps.writeFile()
     print(f"Trial {trialName} setup complete with coefficients: {customCoeffs if customCoeffs else {coeffName: coeffValue}}")
-    
 
 def executeCase(trialName: str, trialDir: Path = Path("./cases")):
     '''
@@ -286,18 +321,30 @@ def executeCase(trialName: str, trialDir: Path = Path("./cases")):
 
 if __name__ == "__main__":
     exptData = loadExptData(pos=330, normal="X")
+    exptData_495 = loadExptData(pos=495, normal="X")
+    smoothedData = smoothData(exptData)
+    smoothedData_495 = smoothData(exptData_495)
         
-    # plotContour(x1=exptData['y'].to_numpy(),
-    #             x2=exptData['z'].to_numpy(),
-    #             u=exptData['Vx'].to_numpy())
+    plotContour(x1=exptData['y'].to_numpy(),
+                x2=exptData['z'].to_numpy(),
+                u=exptData['Vx'].to_numpy(),
+                imgName='exptNoSmooth.png',
+                show=True)
+    
+    plotContour(x1=smoothedData['y'].to_numpy(),
+                    x2=smoothedData['z'].to_numpy(),
+                    u=smoothedData['Vx'].to_numpy(), imgName='exptSmooth.png', show=True)
+        
     
     # plotContourComparison(exptData=exptData,
     #                       cfdData=pd.read_csv("data/medium/X_0.33.csv"))
     
-    # rmse, cfdInterpolated = computeRmse(exptData=exptData,
-    #                     cfdData=pd.read_csv("data/medium/X_0.33.csv"))
+    # rmse, cfdInterpolated = computeRmse(exptData=smoothedData,
+    #                     cfdData=pd.read_csv("data/a1_0.248/X_0.33.csv"))
+    # rmse_495, cfdInterpolated2 = computeRmse(exptData=smoothedData_495,
+    #                         cfdData=pd.read_csv("data/a1_0.248/X_0.33.csv"))
 
-    # plotErrorContour(exptData=exptData,
+    # plotErrorContour(exptData=smoothedData,
     #                 cfdInterpolated=cfdInterpolated, show=True)
     
-    
+    # print(rmse + rmse_495)

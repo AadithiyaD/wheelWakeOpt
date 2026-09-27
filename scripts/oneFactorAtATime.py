@@ -48,7 +48,9 @@ for entry in TRIAL_VALUES:
 
     # Now to calculate rmse
     exptData_330mm = loadExptData(pos=330, normal = "X")
+    exptData_330mm = smoothData(exptData_330mm)
     exptData_495mm = loadExptData(pos=495, normal = "X")
+    exptData_495mm = smoothData(exptData_495mm)
     
     cfd_330mm = pd.read_csv(Path("cases") / trialName / "X_0.33.csv")
     cfd_495mm = pd.read_csv(Path("cases") / trialName / "X_0.495.csv")

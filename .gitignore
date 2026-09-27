@@ -6,7 +6,6 @@ venv/
 log.*
 # thoughts.md
 */polyMesh/*
-maybeUnnecessary/*
 __pycache__/*
 */__pycache__/*
 .git*
