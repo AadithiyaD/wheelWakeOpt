@@ -1,5 +1,6 @@
-from helperFuncs import *
 import os
+
+from helperFuncs import *
 
 TRIAL_VALUES = [
     {'coeff': 'a1', 'value': 0.248, 'rmse': 0.0},
@@ -49,8 +50,8 @@ for entry in TRIAL_VALUES:
     exptData_330mm = loadExptData(pos=330, normal = "X")
     exptData_495mm = loadExptData(pos=495, normal = "X")
     
-    cfd_330mm = pd.read_csv((Path("cases") / trialName / "X_0.33.csv"))
-    cfd_495mm = pd.read_csv((Path("cases") / trialName / "X_0.495.csv"))
+    cfd_330mm = pd.read_csv(Path("cases") / trialName / "X_0.33.csv")
+    cfd_495mm = pd.read_csv(Path("cases") / trialName / "X_0.495.csv")
     
     rmse_330, interpolatedVelocityField_330 = computeRmse(exptData=exptData_330mm, cfdData=cfd_330mm)
     rmse_495, interpolatedVelocityField_495 = computeRmse(exptData=exptData_495mm, cfdData=cfd_495mm) 
@@ -68,19 +69,19 @@ for entry in TRIAL_VALUES:
     imgDir = Path("./images")
     os.makedirs(imgDir/ trialName, exist_ok=True)
     plotContourComparison(exptData=exptData_330mm,
-                          cfdData=cfd_330mm,
-                          plotTitle="Contour velocity comparison",
-                          imgName=f"{trialName}/uxComparison_0.33_{trialName}.png")
+                        cfdData=cfd_330mm,
+                        plotTitle="Contour velocity comparison",
+                        imgName=f"{trialName}/uxComparison_0.33_{trialName}.png")
     plotContourComparison(exptData=exptData_495mm,
-                              cfdData=cfd_495mm,
-                              plotTitle="Contour velocity comparison",
-                              imgName=f"{trialName}/uxComparison_0.495_{trialName}.png")
+                            cfdData=cfd_495mm,
+                            plotTitle="Contour velocity comparison",
+                            imgName=f"{trialName}/uxComparison_0.495_{trialName}.png")
     
     plotErrorContour(exptData=exptData_330mm,
-                     cfdInterpolated=interpolatedVelocityField_330,
-                     plotTitle= "Ux Velocity absolute error distribution",
-                     imgName=f"{trialName}/errorDist_0.33_{trialName}.png")
+                    cfdInterpolated=interpolatedVelocityField_330,
+                    plotTitle= "Ux Velocity absolute error distribution",
+                    imgName=f"{trialName}/errorDist_0.33_{trialName}.png")
     plotErrorContour(exptData=exptData_495mm,
-                         cfdInterpolated=interpolatedVelocityField_495,
-                         plotTitle= "Ux Velocity absolute error distribution",
-                         imgName=f"{trialName}/errorDist_0.495_{trialName}.png")
+                        cfdInterpolated=interpolatedVelocityField_495,
+                        plotTitle= "Ux Velocity absolute error distribution",
+                        imgName=f"{trialName}/errorDist_0.495_{trialName}.png")

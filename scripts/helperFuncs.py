@@ -26,7 +26,7 @@ COL_EXTENT = 0.21
 IMG_DIR = Path('./images/')
 
 def loadExptData(pos: int, normal: str,
-                 rowSkip = ROW_SKIP, colExtent = COL_EXTENT):
+                rowSkip = ROW_SKIP, colExtent = COL_EXTENT):
     '''
     Load and return expt data as dataframe. 
     `pos` is specified in mm. ex: `330` for 330mm position
@@ -88,9 +88,9 @@ def plotContour(x1: np.ndarray, x2: np.ndarray, u: np.ndarray,
         plt.show()
 
 def plotContourComparison(exptData: pd.DataFrame, cfdData: pd.DataFrame,
-                          plotTitle: str = "Contour Velocity Plot Comparison",
-                          imgName: str = 'contourPlotComparison.png',
-                          show: bool = False):
+                        plotTitle: str = "Contour Velocity Plot Comparison",
+                        imgName: str = 'contourPlotComparison.png',
+                        show: bool = False):
     '''
     Creates a side by side comparsion of the contour plots for the given 
     CFD run and experimental data
@@ -182,7 +182,7 @@ def plotErrorContour(exptData: pd.DataFrame, cfdInterpolated: np.ndarray,
         plt.show()
 
 def setupTrial(trialName: str, trialDir: Path = Path("./cases"), coeffName: str | None = None,
-               coeffValue: float | None = None, customCoeffs: dict | None = None):
+            coeffValue: float | None = None, customCoeffs: dict | None = None):
     '''
     Sets up a case with the specified turbulence coefficient variation.
     If `customCoeffs` is provided, it will override the default coefficients with
@@ -222,8 +222,6 @@ def setupTrial(trialName: str, trialDir: Path = Path("./cases"), coeffName: str 
 
     turbProps.writeFile()
     print(f"Trial {trialName} setup complete with coefficients: {customCoeffs if customCoeffs else {coeffName: coeffValue}}")
-    
-    return None
     
 
 def executeCase(trialName: str, trialDir: Path = Path("./cases")):
