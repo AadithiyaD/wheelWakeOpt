@@ -218,7 +218,7 @@ def plotErrorContour(exptData: pd.DataFrame, cfdInterpolated: np.ndarray,
         plt.show()
 
 def setupTrial(trialName: str, trialDir: Path = Path("./cases"), coeffName: str | None = None,
-            coeffValue: float | None = None, customCoeffs: dict | None = None):
+            coeffValue: float | None = None, customCoeffs: dict[str, float] | None = None):
     '''
     Sets up a case with the specified turbulence coefficient variation.
     If `customCoeffs` is provided, it will override the default coefficients with
