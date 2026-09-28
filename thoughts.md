@@ -146,11 +146,10 @@ How much of an issue is it that the contact patch does not have layers?
 				- Again, not much improvement. Need to rethink approach
 - Now,
 	- [x] Blend expt data
-		- The blending doesn't actually do much, its much better i think to just set the horizontal limits to |0.2| so that
-			we exclude the portions with the support structure's wake
-	- [] Vary each coeff one at a time and tabulate results
-		- [] Write the control script that does the actual automation for this
+	- [x] Vary each coeff one at a time and tabulate results
+		- [x] Write the control script that does the actual automation for this
 		- [] Need to use funcs from helperfuncs.py in all automation scripts
+		- new baseline rmse: 9.8
 	- [] Restructure the entire thing, put central control and bayesOpt also into scripts dir
 	- [] Select 3 most significant coeffs
 	- [] Perform a DOE to see which combos of coeffs to test

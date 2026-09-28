@@ -1,8 +1,5 @@
-from error_calc import calc_rmse
-from pathlib import Path
-from PyFoam.RunDictionary.ParsedParameterFile import ParsedParameterFile
 import sys
-import os
+from pathlib import Path
 
 from helperFuncs import *
 
@@ -21,8 +18,8 @@ exptData_495mm = loadExptData(pos=495, normal = "X")
 
 cfdCaseName = sys.argv[1] if len(sys.argv) > 1 else "default"
 
-cfd_330mm = pd.read_csv((Path("images") / cfdCaseName / "X_0.33.csv"))
-cfd_495mm = pd.read_csv((Path("images") / cfdCaseName / "X_0.495.csv"))
+cfd_330mm = pd.read_csv(Path("images") / cfdCaseName / "X_0.33.csv")
+cfd_495mm = pd.read_csv(Path("images") / cfdCaseName / "X_0.495.csv")
 
 rmse_330, _ = computeRmse(exptData=exptData_330mm, cfdData=cfd_330mm)
 rmse_495, _ = computeRmse(exptData=exptData_495mm, cfdData=cfd_495mm) 
